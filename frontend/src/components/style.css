@@ -1,0 +1,8 @@
+.box-banner img {
+    transition: all 0.5s ease-in-out;
+}
+
+.box-banner:hover img {
+    scale: 1.2;
+}
+
