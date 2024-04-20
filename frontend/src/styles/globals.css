@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #78a206
+}
+
+.dropdown:hover > .dropdown-content {
+	display: block;
+}
+
+.wp-block-heading {
+    @apply text-2xl font-bold py-6;
+}
+
+
