@@ -11,11 +11,10 @@ export interface VerifyEmailReqBody {
 }
 
 export interface RegisterReqBody {
-  name: string
+  username: string
   email: string
   password: string
   confirm_password: string
-  date_of_birth: string
 }
 
 export interface LogoutReqBody {
