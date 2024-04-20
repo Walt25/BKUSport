@@ -8,7 +8,7 @@ import { I18nProvider } from "../contexts/I18n";
 export default function App({ Component, pageProps }: AppProps) {
     const route = useRouter();
 
-    if (["/login", "/logout"].includes(route.pathname)) return <Component {...pageProps} />;
+    if (["/login", "/logout", "/signup"].includes(route.pathname)) return <Component {...pageProps} />;
 
     return (
         <I18nProvider>

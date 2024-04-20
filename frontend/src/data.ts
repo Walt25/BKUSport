@@ -126,345 +126,69 @@ export const policy = [
 
   export const productData:ProductType[] = [
     {
+        id: 'cHJvZHVjdDo2Nw==',
+        name: 'Giày thể thao (Sneaker) Nam Giày nam adidas Grand Court Base ART EE7904',
+        sku: "SKU: E0021",
+        slug: 'vien-uong-omexxel-calk2-excelife-bo-sung-canxi-vitamin-d3-3-vi-x-10-vien',
+        description: '',
+        shortDescription: '',
+        regularPrice: '360000&nbsp;₫',
+        salePrice: '300000&nbsp;₫',
+        visible: true,
+        galleryImages: ["http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp", "http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp"]
+        
+    },
+    {
         id: '1',
         name: 'Giày thể thao (Sneaker) Nam Giày nam adidas Grand Court Base ART EE7904',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'Trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
+        sku: "SKU: E0021",
+        slug: 'a-b-c',
+        description: '',
+        shortDescription: '',
+        regularPrice: '360000&nbsp;₫',
+        salePrice: '300000&nbsp;₫',
+        visible: true,
+        galleryImages: ["http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp", "http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp"]
+        
     },
     {
-        id: '2',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 41,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
+        id: '1',
+        name: 'Giày thể thao (Sneaker) Nam Giày nam adidas Grand Court Base ART EE7904',
+        sku: "SKU: E0021",
+        slug: 'a-b-c',
+        description: '',
+        shortDescription: '',
+        regularPrice: '360000&nbsp;₫',
+        salePrice: '300000&nbsp;₫',
+        visible: true,
+        galleryImages: ["http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp", "http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp"]
+        
     },
     {
-        id: '3',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 42,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
+        id: '1',
+        name: 'Giày thể thao (Sneaker) Nam Giày nam adidas Grand Court Base ART EE7904',
+        sku: "SKU: E0021",
+        slug: 'a-b-c',
+        description: '',
+        shortDescription: '',
+        regularPrice: '360000&nbsp;₫',
+        salePrice: '300000&nbsp;₫',
+        visible: true,
+        galleryImages: ["http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp", "http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp"]
+        
     },
     {
-        id: '4',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 43,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
+        id: '1',
+        name: 'Giày thể thao (Sneaker) Nam Giày nam adidas Grand Court Base ART EE7904',
+        sku: "SKU: E0021",
+        slug: 'a-b-c',
+        description: '',
+        shortDescription: '',
+        regularPrice: '360000&nbsp;₫',
+        salePrice: '300000&nbsp;₫',
+        visible: true,
+        galleryImages: ["http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp", "http://cungmuasam.techai.vn/wp-content/uploads/2024/04/00027454_omexxel_calk2_3x10_3344_62ba_large_efb46a51a1.webp"]
+        
     },
-    {
-        id: '5',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '6',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '7',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '8',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '9',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '10',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '11',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '12',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '13',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '14',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '15',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '16',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '17',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '18',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '19',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    },
-    {
-        id: '20',
-        name: 'Giày thể thao (Sneaker) Nam Giày Puma Smash Vulc 359622-05',
-        brand: "SKU: E0021",
-        price: 75.99,
-        thumbnail: [
-            product1.src,product2.src,product3.src,product4.src,product5.src
-        ],
-        condition: 'Giày chính hãng đã qua sử dụng, độ mới 85%.',
-        size: 40,
-        warn: [
-            'trước khi đặt khách hàng nên nhắn trước với shop để xem ảnh chi tiết sản phẩm. Để tránh tình trạng nhận giày không đúng với mong muốn của khách.',
-            'Cam kết hoàn tiền 100% nếu phát hiện sản phẩm không phải hàng chính hãng hoặc không giống với cam kết. Shop không áp dụng đổi trả trong trường hợp khách đã sử dụng sản phẩm.',
-            'Chính sách bảo hành: Sản phẩm bảo hành keo trong 12 tháng. 1 đổi 1 hoặc hoàn tiền lại trong trường hợp không vừa size hoặc giao nhầm sản phẩm. Nhận vệ sinh giày giá 40k.'
-        ],
-        type: 'shoes'
-    }
-    
 
 ]
