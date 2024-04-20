@@ -86,21 +86,19 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
                     <div className="flex flex-row justify-center max-md:flex-col">
                         <div className="flex flex-row justify-evenly w-[50%] max-md:w-full">
                         {
-                            product.galleryImages?.nodes && (
                                 <>
                                     <div className="flex flex-col justify-start">
-                                        {product.galleryImages.nodes.map((item, key) => (
+                                        {product.galleryImages.map((item, key) => (
                                             <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
-                                                <img src={item.mediaItemUrl} alt="pic" className="border" />
+                                                <img src={item} alt="pic" className="border" />
                                             </div>
                                         ))}
                                     </div>
                                     <div className="flex-1">
-                                        <img src={product.galleryImages.nodes[currentThumbnail].mediaItemUrl} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
+                                        <img src={product.galleryImages[currentThumbnail]} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
                                     </div>
                                 </>
-                        )
-}
+                        }
                         </div>
                         <div className="flex-1 ml-12 flex flex-col justify-start p-2 max-md:ml-0">
                             <h1 className="font-semibold text-lg">{product.name}</h1>

@@ -2,43 +2,11 @@ import axios from "axios";
 import { graphql } from "../../helpers/graphql";
 import { ProductType } from "../../components/Product";
 import { NextApiRequest, NextApiResponse } from "next";
+import { productData } from "@/data";
 
 export const getProducts  = async (): Promise<ProductType[]> =>  {
-    const query = `
-        query getProducts {
-            products {
-                nodes {
-                  id
-                  name
-                  sku
-                  shortDescription
-                  slug
-                  ... on SimpleProduct {
-                    id
-                    name
-                    regularPrice
-                    salePrice
-                    galleryImages {
-                      nodes {
-                        mediaItemUrl
-                      }
-                    }
-                    attributes {
-                      nodes {
-                        attributeId
-                        label
-                        options
-                        visible
-                      }
-                    }
-                  }
-                }
-              }
-        }
-    `;
-
-    const res = await graphql(query);
-    return res.data?.products?.nodes ?? [];
+    const res = productData
+    return res || [];
 
 }
 
@@ -82,48 +50,10 @@ export const getProductsByCategory  = async (id: string, limit = 3): Promise<Pro
 }
 
 export const getProduct = async (id: string): Promise<ProductType> => {
-    const query = `
-        query getProduct {
-            product(id: "${id}") {
-                id
-                name
-                sku
-                description
-                shortDescription
-                ... on SimpleProduct {
-                    id
-                    name
-                    regularPrice
-                    salePrice
-                    galleryImages {
-                        nodes {
-                            mediaItemUrl
-                        }
-                    }
-                }
-                productCategories {
-                    edges {
-                        node {
-                            id
-                            name
-                        }
-                    }
-                }
-                attributes {
-                    nodes {
-                        attributeId
-                        label
-                        options
-                        visible
-                    }
-                }
-            }
-        }
-    `;
+  
+    const res = productData.find(i => i.id === id);
 
-    const res = await graphql(query);
-
-    return res.data?.product;
+    return res || {} as ProductType
 }
 
 export const getProductsFiltered = async (categories: number[] | null, maxPrice: number, minPrice: number): Promise<ProductType[]> => {

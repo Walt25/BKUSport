@@ -3,10 +3,13 @@ import { Carousel } from "@/components/Carousel";
 
 import Divider from "@mui/material/Divider";
 import { ProductsCarousel } from "@/components/ProductsCarousel";
-import { bannerBottom, bannerCarousel, bannerTop, policy} from "@/data";
+import { bannerBottom, bannerCarousel, bannerTop, policy, productData} from "@/data";
 import { useMediaQuery } from "@mui/material";
 import { Catalog } from "@/components/Catalog";
 import { getProducts } from "./api/product";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 
 export const getServerSideProps = async () => {
     const products = await getProducts();
@@ -21,6 +24,12 @@ export const getServerSideProps = async () => {
 export default function Home(props: {products: any[]}) {
     const sm = useMediaQuery("(max-width: 640px)");
     const md = useMediaQuery("(max-width: 768px)");
+
+    const router = useRouter()
+
+    // useEffect(() => {
+    //     router.push('/login')
+    // }, [])
 
     return (
         <main className="flex min-h-screen flex-col items-center">
@@ -44,7 +53,7 @@ export default function Home(props: {products: any[]}) {
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3 mb-12">
-                <ProductsCarousel items={props.products} slidePerView={sm ? 3 : md ? 5 : 6} />
+                <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
             </div>
             <div className="w-[94%] mx-auto px-3 border border-[#ebebeb] flex flex-row justify-between max-sm:flex-col">
                 {policy.map((item, key) => (
@@ -65,10 +74,10 @@ export default function Home(props: {products: any[]}) {
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div className="mb-12">
-                    <ProductsCarousel items={props.products} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
                 <div className="mb-6">
-                    <ProductsCarousel items={props.products} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
             <div className="w-[94%] mx-auto flex flex-row max-sm:flex-col">
@@ -84,7 +93,7 @@ export default function Home(props: {products: any[]}) {
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div>
-                    <ProductsCarousel items={props.products} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
             <div className=" w-[94%] mx-auto py-6 flex flex-col items-start px-3">
@@ -95,7 +104,7 @@ export default function Home(props: {products: any[]}) {
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div>
-                    <ProductsCarousel items={props.products} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
             <div className="w-full pt-6">

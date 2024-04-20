@@ -25,9 +25,7 @@ export type ProductType = {
             visible: boolean
         }[]
     },
-    galleryImages?: {
-        nodes: {mediaItemUrl: string}[];
-    };
+    galleryImages: string[]
     
 };
 
@@ -44,10 +42,12 @@ export const Product: React.FC<ProductProps> = (props) => {
 
     const price = formatCurrency(item.regularPrice)
 
+    console.log(item)
+
     return (
         <div key={item.id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
             <Link href={`/products/${item.id}/${item.slug}`}>
-                <img src={item.galleryImages?.nodes[0].mediaItemUrl} alt={"pic"} className="rounded" />
+                <img src={item.galleryImages[0]} alt={"pic"} className="rounded" />
             </Link>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
@@ -84,20 +84,19 @@ export const Product: React.FC<ProductProps> = (props) => {
                         <div>
                             <div className="flex flex-row w-[95%] mx-auto my-6 justify-center">
                                 <div className="flex flex-row justify-evenly w-[50%]">
-                                    {item.galleryImages?.nodes && (
                                         <>
                                             <div className="flex flex-col justify-start">
-                                                {item.galleryImages.nodes.map((item, key) => (
+                                                {item.galleryImages.map((item, key) => (
                                                     <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
-                                                        <img src={item.mediaItemUrl} alt="pic" className="border" />
+                                                        <img src={item} alt="pic" className="border" />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="flex-1">
-                                                <img src={item.galleryImages.nodes[currentThumbnail].mediaItemUrl} alt="pic" className="border w-full ml-4 mr-2 my-2" />
+                                                <img src={item.galleryImages[currentThumbnail]} alt="pic" className="border w-full ml-4 mr-2 my-2" />
                                             </div>
                                         </>
-                                    )}
+                                    
                                 </div>
                                 <div className="flex-1 ml-12 flex flex-col justify-start p-2">
                                     <div className="flex flex-row items-start">
