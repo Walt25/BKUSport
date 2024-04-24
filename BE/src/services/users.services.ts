@@ -9,34 +9,34 @@ import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
 
 class UsersService {
-  private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  private signAccessToken({ user_id, role }: { user_id: string; role: string }) {
     return signToken({
-      payload: { user_id, verify, token_type: TokenType.AccessToken },
+      payload: { user_id, role, token_type: TokenType.AccessToken },
       options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN }
     })
   }
-  private signRefreshToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  private signRefreshToken({ user_id, role }: { user_id: string; role: string }) {
     return signToken({
-      payload: { user_id, verify, token_type: TokenType.RefeshToken },
+      payload: { user_id, role, token_type: TokenType.RefeshToken },
       options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
     })
   }
 
-  private signAccessAndRefreshToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
-    return Promise.all([this.signAccessToken({ user_id, verify }), this.signRefreshToken({ user_id, verify })])
+  private signAccessAndRefreshToken({ user_id, role }: { user_id: string; role: string }) {
+    return Promise.all([this.signAccessToken({ user_id, role }), this.signRefreshToken({ user_id, role })])
   }
 
-  private signEmailVerifyToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  private signEmailVerifyToken({ user_id, role }: { user_id: string; role: string }) {
     return signToken({
-      payload: { user_id, verify, token_type: TokenType.EmailVerifyToken },
+      payload: { user_id, role, token_type: TokenType.EmailVerifyToken },
       options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
     })
   }
 
-  async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  async login({ user_id, role }: { user_id: string; role: string }) {
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
       user_id: user_id.toString(),
-      verify: verify
+      role: role
     })
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token })
@@ -55,17 +55,18 @@ class UsersService {
     const result = await databaseService.users.insertOne(
       new User({
         ...payload,
+        role: '',
         password: hashPassword(payload.password)
       })
     )
     const user_id = result.insertedId.toString()
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
       user_id: user_id.toString(),
-      verify: UserVerifyStatus.Unverified
+      role: ''
     })
     const email_verify_token = await this.signEmailVerifyToken({
       user_id: user_id.toString(),
-      verify: UserVerifyStatus.Unverified
+      role: ''
     })
     await databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
       {

@@ -12,3 +12,8 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerifyToken
 }
+
+export enum RentalStatus {
+  Rented,
+  NotRented
+}
