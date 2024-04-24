@@ -3,6 +3,8 @@ import box2 from '@/assets/box2.webp'
 import box3 from '@/assets/box3.webp'
 import box4 from '@/assets/box4.webp'
 import box5 from '@/assets/box5.webp'
+import box6 from '@/assets/box6.png'
+
 import product1 from '@/assets/product1.jpg'
 import product2 from '@/assets/product2.webp'
 import product3 from '@/assets/product3.webp'
@@ -11,16 +13,16 @@ import product5 from '@/assets/product5.webp'
 
 import banner1 from '@/assets/banner1.jpg'
 import banner2 from '@/assets/banner2.jpg'
-import banner3 from '@/assets/banner3.webp'
+import banner3 from '@/assets/banner3.jpg'
 import { ProductType } from './components/Product'
 
    
 export const bannerTop = [
-    box1, box2, box3
+    box1, box2, box6
 ]
 
 export const bannerCarousel = [
-    banner1, banner2, banner3
+  banner3, banner1, banner2
 ] 
 
 export const bannerBottom = [

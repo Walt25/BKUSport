@@ -12,14 +12,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <I18nProvider>
-            <div style={{ zIndex: 99 }} className="sticky top-0 w-full">
-                <Header />
+            <div>
+                <div style={{ zIndex: 99 }} className="sticky top-0 w-full">
+                    <Header />
+                </div>
+                <Component {...pageProps} />;
+                <div className="w-[94%] mx-auto pt-6">
+                    <Footer />
+                </div>
+                <div id={"model-container"}></div>
             </div>
-            <Component {...pageProps} />;
-            <div className="w-[94%] mx-auto pt-6">
-                <Footer />
-            </div>
-            <div id={"model-container"}></div>
         </I18nProvider>
     );
 }

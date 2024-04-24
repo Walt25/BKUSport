@@ -13,7 +13,7 @@ export const BoxBanner:React.FC<BoxBannerProps> = (props) => {
     return (
         <div className={`${sx} overflow-hidden `}>
             <div className="hover:scale-105 transition ease-in duration-300">
-                <Image src={src} alt=""/>
+                <Image src={src} alt="" className="bg-cover"/>
             </div>
         </div>
     )

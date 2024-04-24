@@ -43,7 +43,7 @@ export default function Home(props: {products: any[]}) {
             </div>
             <div className="w-[94%] mx-auto flex flex-row n max-sm:flex-col">
                 {bannerTop.map((item, key) => (
-                    <BoxBanner src={item} sx={"flex-1 mx-3 my-6"} key={key} />
+                    <BoxBanner src={item} sx={"flex-1 mx-3 my-6 h-[220px]"} key={key} />
                 ))}
             </div>
             <div className=" w-[94%] mx-auto py-12 flex flex-col items-center">
