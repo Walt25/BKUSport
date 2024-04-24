@@ -5,6 +5,7 @@ import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import Field from '~/models/schemas/Field.schema'
 import Uniform from '~/models/schemas/Uniform.schema'
 import RentalPrice from '~/models/schemas/RentalPrice.schema'
+import Food from '~/models/schemas/Food.schema'
 
 config()
 
@@ -44,6 +45,10 @@ class DatabaseService {
 
   get uniforms(): Collection<Uniform> {
     return this.db.collection(process.env.DB_UNIFORM_COLLECTION as string)
+  }
+
+  get foods(): Collection<Food> {
+    return this.db.collection(process.env.DB_FOOD_COLLECTION as string)
   }
 }
 const databaseService = new DatabaseService()

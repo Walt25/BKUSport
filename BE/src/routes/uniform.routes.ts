@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addUniformController, getAllUniformController } from '~/controllers/uniform.controller'
+import { addUniformController, getAllUniformController, getUniformController } from '~/controllers/uniform.controller'
 
 import { wrapRequestHanlder } from '~/utils/handler'
 
@@ -9,6 +9,6 @@ uniformRouter.get('/', wrapRequestHanlder(getAllUniformController))
 
 uniformRouter.post('/', wrapRequestHanlder(addUniformController))
 
-uniformRouter.get('/:uniform_id', wrapRequestHanlder(getAllUniformController))
+uniformRouter.get('/:uniform_id', wrapRequestHanlder(getUniformController))
 
 export default uniformRouter

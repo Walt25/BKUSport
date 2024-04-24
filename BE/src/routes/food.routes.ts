@@ -1,12 +1,13 @@
 import { Router } from 'express'
+import { addFoodController, getAllFoodController, getFoodController } from '~/controllers/food.controller'
 import { wrapRequestHanlder } from '~/utils/handler'
 
-// const uniformRouter = Router()
+const foodRouter = Router()
 
-// uniformRouter.get('/', wrapRequestHanlder(getAllFoodController))
+foodRouter.get('/', wrapRequestHanlder(getAllFoodController))
 
-// uniformRouter.post('/', wrapRequestHanlder(addFoodController))
+foodRouter.post('/', wrapRequestHanlder(addFoodController))
 
-// uniformRouter.get('/:uniform_id', wrapRequestHanlder(getUniformController))
+foodRouter.get('/:food_id', wrapRequestHanlder(getFoodController))
 
-// export default uniformRouter
+export default foodRouter

@@ -6,11 +6,9 @@ class UniformService {
   async addNewUniform(body: any) {
     const result = await databaseService.uniforms.insertOne(
       new Uniform({
-        image: body.image,
+        images: body.image,
         name: body.name,
-        stock: body.stock,
-        color: body.color,
-        size: body.size,
+        type: body.type,
         price: body.price,
         description: body.description
       })

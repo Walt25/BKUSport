@@ -1,32 +1,31 @@
 import { ObjectId } from 'mongodb'
 
+interface Type {
+  stock: number
+  size: string
+}
+
 interface UniformType {
   _id?: ObjectId
-  image: string
+  images: string[]
   name: string
-  stock: number
-  color: string
-  size: string
+  type: Type[]
   price: number
   description: string
 }
 
 export default class Uniform {
   _id?: ObjectId
-  image: string
+  images: string[]
   name: string
-  stock: number
-  color: string
-  size: string
+  type: Type[]
   price: number
   description: string
   constructor(uniform: UniformType) {
     this._id = uniform._id
-    this.image = uniform.image
+    this.images = uniform.images
     this.name = uniform.name
-    this.stock = uniform.stock
-    this.color = uniform.color
-    this.size = uniform.size
+    this.type = uniform.type
     this.price = uniform.price
     this.description = uniform.description
   }
