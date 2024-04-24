@@ -1,4 +1,5 @@
 const express = require('express')
+var cors = require('cors');
 import { config } from 'dotenv'
 import databaseService from './services/database.services'
 import usersRouter from './routes/users.routes'
@@ -14,6 +15,7 @@ const port = 4000
 // Route chào mừng
 const app = express()
 app.use(express.json())
+app.use(cors());
 // Khởi chạy máy chủ
 app.use('/users', usersRouter)
 app.use('/fields', fieldRouter)

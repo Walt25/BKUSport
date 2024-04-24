@@ -67,6 +67,10 @@ const NAVIGATION = [
         title: "Tin tức",
         link: "/blog",
     },
+    {
+        title: "Đặt sân",
+        link: "/",
+    },
 ];
 
 export const Header = () => {

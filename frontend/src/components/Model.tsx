@@ -38,8 +38,8 @@ export const Model:React.FC<ModelProps> = ({onClose, render}) => {
                     padding: '10px',
                     backgroundColor: 'white',
                     left: '20%',
-                    top: '10%',
-                    bottom: '10%',
+                    top: '20%',
+                    bottom: '20%',
                     right: '20%',
                     borderRadius: '14px',
                     zIndex: 9999

@@ -8,28 +8,67 @@ import { useMediaQuery } from "@mui/material";
 import { Catalog } from "@/components/Catalog";
 import { getProducts } from "./api/product";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ProductType } from "@/components/Product";
+import { FieldsCarousel } from "@/components/FieldsCarousel";
+import { FoodsCarousel } from "@/components/FoodsCarousel";
 
+export type FieldsType = {
+    images: string[],
+    location: string,
+    name: string,
+    _id: string,
+    slug: string
+}
 
-export const getServerSideProps = async () => {
-    const products = await getProducts();
-    return {
-        props: {
-            products
-        },
-    };
-
+export type Foodstype = {
+    _id: string,
+    images: string[],
+    name: string,
+    stock: number,
+    price: number,
+    description: string,
+    slug: string
 }
 
 export default function Home(props: {products: any[]}) {
     const sm = useMediaQuery("(max-width: 640px)");
     const md = useMediaQuery("(max-width: 768px)");
+    const [fields, setFields] = useState<FieldsType[]>([])
+    const [foods, setFoods] = useState<Foodstype[]>([])
+
 
     const router = useRouter()
 
-    // useEffect(() => {
-    //     router.push('/login')
-    // }, [])
+    useEffect(() => {
+        const getFields = async () => {
+            const res = await axios.get("http://localhost:4000/fields")
+            if (res.data.result.length > 0) {
+                res.data.result.forEach((item: FieldsType) => {
+                    const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    item.slug = slug;
+                  });
+                setFields(res.data.result)
+            }
+            else setFields([])
+        }
+
+        const getFoods = async () => {
+            const res = await axios.get("http://localhost:4000/foods")
+            if (res.data.result.length > 0) {
+                res.data.result.forEach((item: Foodstype) => {
+                    const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    item.slug = slug;
+                  });
+                setFoods(res.data.result)
+            }
+            else setFoods([])
+        }
+
+        getFields()
+        getFoods()
+    }, [])
 
     return (
         <main className="flex min-h-screen flex-col items-center">
@@ -86,25 +125,28 @@ export default function Home(props: {products: any[]}) {
                 ))}
             </div>
             <div className=" w-[94%] mx-auto py-12 flex flex-col items-start px-3">
-                <h1 className="font-semibold text-2xl">Sản phẩm nên thử</h1>
+                <div className="flex flex-row justify-between w-full">
+                    <h1 className="font-semibold text-2xl">Sân thể thao</h1>
+                    <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-sm" value="Chọn môn thể thao"/>
+                </div>
                 <div className="w-full pt-6">
                     <Divider className="w-full" />
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div>
-                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <FieldsCarousel items={fields} slidePerView={sm ? 3 : md ? 3 : 4} />
                 </div>
             </div>
             <div className=" w-[94%] mx-auto py-6 flex flex-col items-start px-3">
-                <h1 className="font-semibold text-2xl">Sản phẩm mới</h1>
+                <h1 className="font-semibold text-2xl">Đồ uống</h1>
                 <div className="w-full pt-6">
                     <Divider className="w-full" />
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div>
-                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <FoodsCarousel items={foods} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
             <div className="w-full pt-6">

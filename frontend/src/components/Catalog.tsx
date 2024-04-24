@@ -9,7 +9,7 @@ import { PiDesktopTower, PiTelevisionSimple } from "react-icons/pi"
 import { TbSmartHome } from "react-icons/tb"
 import { Loading } from "./Loading"
 import { Product, ProductType } from "./Product"
-import { Box } from "@mui/material"
+import { Box, Divider } from "@mui/material"
 
 type CatalogProps = {
     canExpand: boolean
@@ -61,6 +61,9 @@ export const Catalog:React.FC<CatalogProps> = ({canExpand = false}) => {
 
     return (
         <div className="flex flex-col justify-between relative shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-md">
+             
+            <div className="p-3 bg-[--primary-color] text-white font-semibold text-lg rounded-tl-md rounded-tr-md">Danh mục</div>
+            <Divider />
              {
                 categories.map((item, key) => (
                     <div className="cursor-pointer group flex py-3 flex-row justify-between flex-1 px-3 items-center hover:bg-[#f2f3f7]" key={key}>

@@ -42,12 +42,10 @@ export const Product: React.FC<ProductProps> = (props) => {
 
     const price = formatCurrency(item.regularPrice)
 
-    console.log(item)
-
     return (
         <div key={item.id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
             <Link href={`/products/${item.id}/${item.slug}`}>
-                <img src={item.galleryImages[0]} alt={"pic"} className="rounded" />
+                <div className="overflow-hidden"><img src={item.galleryImages[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
