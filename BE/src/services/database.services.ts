@@ -2,6 +2,9 @@ import { MongoClient, Db, Collection } from 'mongodb'
 import { config } from 'dotenv'
 import User from '~/models/schemas/User.schema'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import Field from '~/models/schemas/Field.schema'
+import Uniform from '~/models/schemas/Uniform.schema'
+import RentalPrice from '~/models/schemas/RentalPrice.schema'
 
 config()
 
@@ -30,6 +33,17 @@ class DatabaseService {
   }
   get refreshTokens(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string)
+  }
+  get fields(): Collection<Field> {
+    return this.db.collection(process.env.DB_FIELD_COLLECTION as string)
+  }
+
+  get rentalPrices(): Collection<RentalPrice> {
+    return this.db.collection(process.env.DB_RENTAL_PRICE_COLLECTION as string)
+  }
+
+  get uniforms(): Collection<Uniform> {
+    return this.db.collection(process.env.DB_UNIFORM_COLLECTION as string)
   }
 }
 const databaseService = new DatabaseService()

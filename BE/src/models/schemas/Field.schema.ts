@@ -4,7 +4,7 @@ interface FieldType {
   _id?: ObjectId
   images: string[]
   location: string
-  promotion_id?: ObjectId
+  promotion_id?: ObjectId | undefined
 }
 
 export default class Field {
@@ -16,6 +16,6 @@ export default class Field {
     this._id = field._id
     this.images = field.images
     this.location = field.location
-    this.promotion_id = field.promotion_id
+    this.promotion_id = field.promotion_id || undefined
   }
 }
