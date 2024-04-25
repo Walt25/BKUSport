@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addFieldController, getAllFieldController } from '~/controllers/field.controller'
+import { addFieldController, getAllFieldController, getFieldByIdController } from '~/controllers/field.controller'
 import { wrapRequestHanlder } from '~/utils/handler'
 
 const fieldRouter = Router()
@@ -7,5 +7,7 @@ const fieldRouter = Router()
 fieldRouter.get('/', wrapRequestHanlder(getAllFieldController))
 
 fieldRouter.post('/', wrapRequestHanlder(addFieldController))
+
+fieldRouter.get('/:field_id', wrapRequestHanlder(getFieldByIdController))
 
 export default fieldRouter

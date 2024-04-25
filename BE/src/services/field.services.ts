@@ -10,6 +10,11 @@ class FieldService {
     const field = await databaseService.fields.findOne({ _id: new ObjectId(result.insertedId) })
     return field
   }
+
+  async getFieldById(field_id: string) {
+    const field = await databaseService.fields.findOne({ _id: new ObjectId(field_id) })
+    return field
+  }
 }
 const fieldService = new FieldService()
 export default fieldService

@@ -17,3 +17,12 @@ export const addFieldController = async (req: Request, res: Response) => {
     result
   })
 }
+
+export const getFieldByIdController = async (req: Request, res: Response) => {
+  const field_id = req.params.field_id
+  const result = await fieldService.getFieldById(field_id)
+  return res.json({
+    message: 'get a field successfully',
+    result
+  })
+}
