@@ -6,6 +6,7 @@ import Field from '~/models/schemas/Field.schema'
 import Uniform from '~/models/schemas/Uniform.schema'
 import RentalPrice from '~/models/schemas/RentalPrice.schema'
 import Food from '~/models/schemas/Food.schema'
+import Equipment from '~/models/schemas/Equipment.schema'
 
 config()
 
@@ -49,6 +50,10 @@ class DatabaseService {
 
   get foods(): Collection<Food> {
     return this.db.collection(process.env.DB_FOOD_COLLECTION as string)
+  }
+
+  get equipments(): Collection<Equipment> {
+    return this.db.collection('equipments')
   }
 }
 const databaseService = new DatabaseService()

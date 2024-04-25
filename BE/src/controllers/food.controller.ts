@@ -12,9 +12,13 @@ export const getAllFoodController = async (req: Request, res: Response) => {
   })
 }
 
-export const getFoodController = async (req: Request, res: Response) => {
+export const getFoodByIdController = async (req: Request, res: Response) => {
   const food_id = req.params.food_id
   const result = databaseService.foods.findOne({ _id: new ObjectId(food_id) })
+  return res.json({
+    message: 'get a food successfully',
+    result
+  })
 }
 
 export const addFoodController = async (req: Request, res: Response) => {
