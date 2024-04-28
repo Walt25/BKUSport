@@ -8,7 +8,6 @@ import { getBlogs } from "../api/blog";
 export const getServerSideProps = async () => {
     const blogs = await getBlogs();
 
-    console.log(blogs);
 
     return {
         props: {

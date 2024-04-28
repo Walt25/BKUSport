@@ -34,6 +34,7 @@ import { GrCafeteria } from "react-icons/gr";
 import { MdFastfood } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
+import { Calendar } from "@/components/Calendar";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -49,6 +50,8 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
 
     const [startDate, setStartDate] = useState(new Date());
 
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         const getField = async () => {
             const res = await axios.get(`http://localhost:4000/fields/${id}`)
@@ -56,6 +59,7 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                 setField(res.data.result)
             }
             else setField({} as FieldsType)
+            setLoading(false)
         }
         const getFields = async () => {
             const res = await axios.get("http://localhost:4000/fields")
@@ -67,10 +71,11 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                 setFields(res.data.result)
             }
             else setFields([])
+            setLoading(false)
         }
         getField()
         getFields()
-    }, [])
+    }, [id])
 
 
     if (!field) return <div>Not found</div>;
@@ -85,7 +90,6 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
         },
     ];
     
-    console.log(field)
 
     const comments = [
         {
@@ -132,6 +136,8 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
         }
     ]
 
+    if (loading) return <div>Loading</div>
+
     return (
         <div>
             <div className="w-[94%] px-3 mx-auto mt-[3%] pb-3 flex flex-row">
@@ -166,6 +172,9 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                                 </>
                         }
                         </div>
+                    </div>
+                    <div className="py-12">
+                        <Calendar />
                     </div>
                     <Divider />
                     <div className="mt-[3%] pb-3 pt-12">

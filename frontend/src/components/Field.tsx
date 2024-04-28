@@ -7,6 +7,7 @@ import { Model } from "./Model";
 import { ImCancelCircle } from "react-icons/im";
 import { formatCash, formatCurrency } from "@/ultils";
 import { FieldsType } from "@/pages";
+import { useRouter } from "next/router";
 
 type FieldProps = {
     item: FieldsType;
@@ -14,18 +15,18 @@ type FieldProps = {
 
 export const Field: React.FC<FieldProps> = (props) => {
     const { item } = props;
-
+    const route = useRouter()
     const [showModel, setShowModel] = useState(false);
     const [currentThumbnail, setCurrentThubnail] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
-    console.log(item)
-
     return (
         <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
-            <Link href={`/fields/${item._id}/${item.slug}`}>
-                <div className="overflow-hidden"><img src={item.images[0]} alt={"pic"} className="rounded" /></div>
-            </Link>
+            {/* <Link href={`/fields/${item._id}/${item.slug}`}>
+            </Link> */}
+            <div className="overflow-hidden" onClick={() => {route.push(`/fields/${item._id}/${item.slug}`)}}>
+                <img src={item.images[0]} alt={"pic"} className="rounded" />
+            </div>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-[14px] font-semibold overflow-hidden truncate">
                     <Link href={`/fields/${item._id}/${item.slug}`}>{item.name} </Link>

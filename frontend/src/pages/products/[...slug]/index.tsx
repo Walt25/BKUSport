@@ -26,7 +26,6 @@ import { formatCash, formatCurrency } from "@/ultils";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
-    console.log(id);
     if (!id) {
         return { props: { product: null } };
     }
