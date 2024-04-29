@@ -68,8 +68,8 @@ const NAVIGATION = [
         link: "/blog",
     },
     {
-        title: "Đặt sân",
-        link: "/",
+        title: "Sân thể thao",
+        link: "/fields",
     },
 ];
 
@@ -143,7 +143,7 @@ export const Header = () => {
 
                 <div className="h-full flex flex-row items-center h-10 ">
                     <div className="flex flex-row items-center h-10 w-[250px] max-sm:hidden">
-                        <div className="bg-[#ebedf0] h-[36px] w-10 flex justify-center items-center rounded-l-md">
+                        <div className="bg-[#ebedf0] h-[36px] px-2 w-10 flex justify-center items-center rounded-l-md">
                             <BiSearch size={18} />
                         </div>
                         <input className="px-2 rounded-r-md outline-none w-80 border h-[36px] bg-[#ebedf0] text-sm" type="text" placeholder="Bạn đang tìm kiếm gì?" />

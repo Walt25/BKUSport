@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <div style={{ zIndex: 99 }} className="sticky top-0 w-full">
                     <Header />
                 </div>
-                <Component {...pageProps} />;
+                <Component {...pageProps} />
                 <div className="w-[94%] mx-auto pt-6">
                     <Footer />
                 </div>

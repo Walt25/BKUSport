@@ -134,9 +134,7 @@ export default function Home(props: {products: any[]}) {
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3">
-                <div>
                     <FieldsCarousel items={fields} slidePerView={sm ? 3 : md ? 3 : 4} />
-                </div>
             </div>
             <div className=" w-[94%] mx-auto py-6 flex flex-col items-start px-3">
                 <h1 className="font-semibold text-2xl">Đồ uống</h1>

@@ -21,7 +21,7 @@ export const Field: React.FC<FieldProps> = (props) => {
     const [quantity, setQuantity] = useState(1);
 
     return (
-        <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
+        <div key={item._id} className="bg-white group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
             {/* <Link href={`/fields/${item._id}/${item.slug}`}>
             </Link> */}
             <div className="overflow-hidden" onClick={() => {route.push(`/fields/${item._id}/${item.slug}`)}}>

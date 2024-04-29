@@ -22,7 +22,6 @@ export type CategoryType = {
     image?: {
         mediaItemUrl: string;
     };
-    children: ProductType[];
 }
 
 const category:CategoryType[] = [
@@ -30,25 +29,26 @@ const category:CategoryType[] = [
         productCategoryId: "1",
         name: "Đồng phục",
         slug: "dong-phuc",
-        children: [],
     },
     {
         productCategoryId: "2",
         name: "Dụng cụ thể thao",
         slug: "dung-cu-the-thao",
-        children: [],
     },
     {
         productCategoryId: "3",
         name: "Đặt đồ ăn",
-        slug: "",
-        children: [],
+        slug: "dat-do-an",
     },
     {
         productCategoryId: "4",
         name: "Thuê dịch vụ",
-        slug: "",
-        children: [],
+        slug: "thue-dich-vu",
+    },
+    {
+        productCategoryId: "5",
+        name: "Sân thể thao",
+        slug: "san-the-thao",
     },
     
 ]
@@ -71,20 +71,6 @@ export const Catalog:React.FC<CatalogProps> = ({canExpand = false}) => {
                             {item.image?.mediaItemUrl && <img src={item.image.mediaItemUrl} alt="pic" className="w-8 h-8 mr-2" />}
                             <span className="pl-2 text-sm">{item.name}</span>
                         </div>
-                        { 
-                            item.children.length > 0 && canExpand && 
-                            <>
-                                <MdKeyboardArrowRight />
-                                <div className="group-hover:flex h-fit w-fit justify-start px-5 py-3 w-[300%] h-[100%] hidden bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] absolute top-0 z-50 left-[100%]">
-                                        {item.children.map((tag) => (
-                                            <Box sx={{width: 200}}>
-                                                <Product key={tag.id} item={tag} />
-                                            </Box>
-                                            ))
-                                        }
-                                </div>
-                            </>
-                        }
                     </div>
                 ))
             }
