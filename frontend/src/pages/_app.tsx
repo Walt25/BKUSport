@@ -4,11 +4,15 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { useRouter } from "next/router";
 import { I18nProvider } from "../contexts/I18n";
+import { AdminLayout } from "@/components/Layout/AdminLayout";
 
 export default function App({ Component, pageProps }: AppProps) {
     const route = useRouter();
 
     if (["/login", "/logout", "/signup"].includes(route.pathname)) return <Component {...pageProps} />;
+    if (["/admin", "/admin/productlist"].includes(route.pathname)) return <AdminLayout>
+        <Component {...pageProps} />
+    </AdminLayout>;
 
     return (
         <I18nProvider>
