@@ -18,53 +18,14 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { ProductType } from '../Product';
-import { useState } from 'react';
-
-interface Data {
-  id: number;
-  category: string;
-  carbs: number;
-  stock: string;
-  name: string;
-  protein: number;
-}
-
-function createData(
-  id: number,
-  name: string,
-  category: string,
-  stock: string,
-  carbs: number,
-  protein: number,
-): Data {
-  return {
-    id,
-    name,
-    category,
-    stock,
-    carbs,
-    protein,
-  };
-}
-
-const rows = [
-  createData(1, 'Cupcake', "Power Tools", "Out of Stock", 67, 4.3),
-  createData(2, 'Donut', "Power Tools", "Out of Stock", 51, 4.9),
-  createData(3, 'Eclair', "Power Tools", "Out of Stock", 24, 6.0),
-  createData(4, 'Frozen yoghurt', "Power Tools", "Out of Stock", 24, 4.0),
-  createData(5, 'Gingerbread', "Power Tools", "Out of Stock", 49, 3.9),
-  createData(6, 'Honeycomb', "Power Tools", "Out of Stock", 87, 6.5),
-  createData(7, 'Ice cream sandwich', "Power Tools", "Out of Stock", 37, 4.3),
-  createData(8, 'Jelly Bean', "Power Tools", "Out of Stock", 94, 0.0),
-  createData(9, 'KitKat', "Power Tools", "Out of Stock", 65, 7.0),
-  createData(10, 'Lollipop', "Power Tools", "Out of Stock", 98, 0.0),
-  createData(11, 'Marshmallow', "Power Tools", "Out of Stock", 81, 2.0),
-  createData(12, 'Nougat', "Power Tools", "Out of Stock", 9, 37.0),
-  createData(13, 'Oreo', "Power Tools", "Out of Stock", 63, 4.0),
-];
-
-
+import { Product, ProductType } from '../Product';
+import { useState, useEffect } from 'react';
+import { getAllEquipment } from '@/pages/api/product';
+import { Loading } from '../Loading';
+import { Chip } from '@mui/material';
+import { HiDotsVertical } from 'react-icons/hi';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -103,8 +64,8 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 }
 
 interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
+  disablePadding: boolean;  
+  id: string;
   label: string;
   numeric: boolean;
 }
@@ -117,10 +78,10 @@ const headCells: readonly HeadCell[] = [
     label: 'Products',
   },
   {
-    id: 'category',
+    id: 'size',
     numeric: true,
     disablePadding: false,
-    label: 'Category',
+    label: 'Size',
   },
   {
     id: 'stock',
@@ -129,22 +90,16 @@ const headCells: readonly HeadCell[] = [
     label: 'Stock',
   },
   {
-    id: 'carbs',
+    id: 'price',
     numeric: true,
     disablePadding: false,
-    label: 'Carbs (g)',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: 'Protein (g)',
+    label: 'Price',
   },
 ];
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -155,7 +110,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -176,7 +131,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'center' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -244,9 +199,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
+          <button className='px-2 py-2 text-sm bg-[--primary-color] w-[100px] text-white rounded-md mr-2'>Add new</button>
         </Tooltip>
       )}
     </Toolbar>
@@ -254,16 +207,35 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('category');
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
+  const [orderBy, setOrderBy] = React.useState<string>('price');
+  const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [products, setProducts] = useState<ProductType[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getEquipments = async () => {
+      const res = await getAllEquipment()
+      if (res.data.result.length > 0) {
+          res.data.result.forEach((item: ProductType) => {
+              const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+              item.slug = slug;
+            });
+          
+          setProducts(res.data.result)
+      }
+      else { setProducts([])}
+
+      setLoading(false)
+    }
+    getEquipments()
+  }, [])
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: string,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -272,16 +244,32 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = products.map((n) => n._id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
+
+
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
+    let newSelected: readonly string[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -298,32 +286,22 @@ export default function EnhancedTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  const checkStock = (type: {stock: number, size: string}[]) => {
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    let stock = 0
+    type.map(i => {
+      if (i.stock > 0) {
+        stock = stock+=i.stock
+      }
+    })
+    if (stock > 0) {
+      return <Chip label={`${stock} in stock`} color="primary" />
+    }
+    return <Chip label={`out of stock`} color="error"/>
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
+  }
 
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rowsPerPage],
-  );
+  const route = useRouter()
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -341,21 +319,20 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={products.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+              {products.map((row, index) => {
+                const isItemSelected = isSelected(row._id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={row._id}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -366,7 +343,8 @@ export default function EnhancedTable() {
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
-                      />
+                        onClick={(event) => handleClick(event, row._id)}
+                        />
                     </TableCell>
                     <TableCell
                       component="th"
@@ -374,12 +352,24 @@ export default function EnhancedTable() {
                       scope="row"
                       padding="none"
                     >
-                      {row.name}
+                      <div onClick={() => {route.push(`/admin/${row._id}`)}}>
+                        <div className='flex flex-row items-center group'>
+                          <img src={row.images[0]} alt="pic" className='w-[40px] h-[40px]'/>
+                          <div className='flex flex-col pl-2'>
+                            <span className='group-hover:underline'>{row.name}</span>
+                            <span className='text-xs text-[#6c757d]'>ID: {row._id}</span>
+                          </div>
+                        </div>
+                      </div> 
                     </TableCell>
-                    <TableCell align="right">{row.category}</TableCell>
-                    <TableCell align="right">{row.stock}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="center">
+                      <span>{`"${row.type[0].size}"`}</span>
+                      {
+                        row.type.slice(1).map(i => <span>{` | "${i.size}"`}</span>)
+                      }
+                    </TableCell>
+                    <TableCell align="center">{checkStock(row.type)}</TableCell>
+                    <TableCell align="center">{row.price} $</TableCell>
                   </TableRow>
                 );
               })}
@@ -398,7 +388,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={products.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

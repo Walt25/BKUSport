@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { graphql } from "../../helpers/graphql";
-import { getProductsByCategory } from "./product";
 import { CategoryType } from "../../components/Catalog";
 
 export const getCategories = async (): Promise<CategoryType[]> => {
@@ -28,8 +27,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const categories = await getCategories();
 
         for (const category of categories) {
-            const products = await getProductsByCategory(category.productCategoryId);
-            category.children = products;
+            // const products = await getProductsByCategory(category.productCategoryId);
+            // category.children = products;
         }
 
         return res.status(200).json(categories);

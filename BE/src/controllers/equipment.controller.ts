@@ -13,7 +13,7 @@ export const getAllEquipmentController = async (req: Request, res: Response) => 
 
 export const getEquipmentByIdController = async (req: Request, res: Response) => {
   const equipment_id = req.params.equipment_id
-  const result = databaseService.equipments.findOne({ _id: new ObjectId(equipment_id) })
+  const result = await databaseService.equipments.findOne({ _id: new ObjectId(equipment_id) })
   return res.json({
     message: 'get a equipment successfully',
     result

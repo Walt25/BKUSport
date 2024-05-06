@@ -5,27 +5,14 @@ import { AiOutlineForm } from "react-icons/ai";
 import { FaShoppingCart, FaRegFileAlt } from "react-icons/fa";
 import { Model } from "./Model";
 import { ImCancelCircle } from "react-icons/im";
-import { formatCash, formatCurrency } from "@/ultils";
 
 export type ProductType = {
-    id: string;
+    _id: string;
     name: string;
-    sku: string;
     slug: string;
-    description: string;
-    shortDescription: string;
-    regularPrice: string;
-    salePrice?: string;
-    visible: boolean;
-    attributes?: {
-        nodes: {
-            attributeId: string,
-            label: string,
-            options?: string[],
-            visible: boolean
-        }[]
-    },
-    galleryImages: string[]
+    price: number;
+    type: {stock: number, size: string}[]
+    images: string[]
     
 };
 
@@ -40,21 +27,19 @@ export const Product: React.FC<ProductProps> = (props) => {
     const [currentThumbnail, setCurrentThubnail] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
-    const price = formatCurrency(item.regularPrice)
-
     return (
-        <div key={item.id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
-            <Link href={`/products/${item.id}/${item.slug}`}>
-                <div className="overflow-hidden"><img src={item.galleryImages[0]} alt={"pic"} className="rounded" /></div>
+        <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
+            <Link href={`/products/${item._id}/${item.slug}`}>
+                <div className="overflow-hidden"><img src={item.images[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
-                    <Link href={`/products/${item.id}/${item.slug}`}>{item.name} </Link>
+                    <Link href={`/products/${item._id}/${item.slug}`}>{item.name} </Link>
                 </span>
 
-                <span className="font-semibold text-[#78a206] py-2">{formatCash(price.cost) + ' ' + price.currency}</span>
+                <span className="font-semibold text-[#78a206] py-2">{item.price + ' ' + "$"}</span>
             </div>
-            {item.salePrice && <div className="bg-[#94c341] text-white absolute top-1 right-1 px-2 py-0.5 rounded text-xs">-{formatCash(price.cost - formatCurrency(item.salePrice).cost) + ' ' + formatCurrency(item.salePrice).currency}</div>}
+            {item.price && <div className="bg-[#94c341] text-white absolute top-1 right-1 px-2 py-0.5 rounded text-xs">-{"5%"}</div>}
 
             <div className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-500 flex flex-col justify-center items-center p-3">
                 <div className="w-full px-4">
@@ -69,7 +54,7 @@ export const Product: React.FC<ProductProps> = (props) => {
                         <AiOutlineForm size={14} color="#78a206" />
                     </div>
                     <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center">
-                        <Link href={`/products/${item.id}/${item.slug}`}>
+                        <Link href={`/products/${item._id}/${item.slug}`}>
                             <FaRegFileAlt size={14} color="#78a206" />
                         </Link>
                     </div>
@@ -84,14 +69,14 @@ export const Product: React.FC<ProductProps> = (props) => {
                                 <div className="flex flex-row justify-evenly w-[50%]">
                                         <>
                                             <div className="flex flex-col justify-start">
-                                                {item.galleryImages.map((item, key) => (
+                                                {item.images.map((item, key) => (
                                                     <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
                                                         <img src={item} alt="pic" className="border" />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="flex-1">
-                                                <img src={item.galleryImages[currentThumbnail]} alt="pic" className="border w-full ml-4 mr-2 my-2" />
+                                                <img src={item.images[currentThumbnail]} alt="pic" className="border w-full ml-4 mr-2 my-2" />
                                             </div>
                                         </>
                                     
@@ -103,9 +88,9 @@ export const Product: React.FC<ProductProps> = (props) => {
                                             <ImCancelCircle size={20} color="red" onClick={() => setShowModel(false)} className="cursor-pointer" />
                                         </div>
                                     </div>
-                                    <span className="text-[#AFAFAF] text-sm py-3">{item.sku}</span>
+                                    <span className="text-[#AFAFAF] text-sm py-3">{item._id}</span>
                                     <Divider />
-                                    <span className="text-[#94c341] font-semibold text-lg py-3">{formatCash(price.cost) + ' ' + price.currency}</span>
+                                    <span className="text-[#94c341] font-semibold text-lg py-3">{item.price + ' ' + '$'}</span>
                                     <Divider />
                                     <div className="flex flex-row items-center py-5">
                                         <button

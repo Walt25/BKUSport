@@ -19,7 +19,6 @@ export const Food: React.FC<FoodProps> = (props) => {
     const [currentThumbnail, setCurrentThubnail] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
-    console.log(item)
 
     return (
         <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
