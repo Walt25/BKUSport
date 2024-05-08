@@ -3,16 +3,17 @@ import { Carousel } from "@/components/Carousel";
 
 import Divider from "@mui/material/Divider";
 import { ProductsCarousel } from "@/components/ProductsCarousel";
-import { bannerBottom, bannerCarousel, bannerTop, policy, productData} from "@/data";
+import { bannerBottom, bannerCarousel, bannerTop, policy} from "@/data";
 import { useMediaQuery } from "@mui/material";
 import { Catalog } from "@/components/Catalog";
-import { getProducts } from "./api/product";
+import { getAllEquipment, getProducts } from "./api/product";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import axios from "axios";
 import { ProductType } from "@/components/Product";
 import { FieldsCarousel } from "@/components/FieldsCarousel";
 import { FoodsCarousel } from "@/components/FoodsCarousel";
+import { UserLayout } from "@/components/Layout/UserLayout";
 
 export type FieldsType = {
     images: string[],
@@ -32,11 +33,12 @@ export type Foodstype = {
     slug: string
 }
 
-export default function Home(props: {products: any[]}) {
+function Home(props: {products: any[]}) {
     const sm = useMediaQuery("(max-width: 640px)");
     const md = useMediaQuery("(max-width: 768px)");
     const [fields, setFields] = useState<FieldsType[]>([])
     const [foods, setFoods] = useState<Foodstype[]>([])
+    const [products, setProducts] = useState<ProductType[]>([])
 
 
     const router = useRouter()
@@ -66,9 +68,23 @@ export default function Home(props: {products: any[]}) {
             else setFoods([])
         }
 
+        const getEquipments = async () => {
+            const res = await getAllEquipment()
+            if (res.data.result.length > 0) {
+                res.data.result.forEach((item: ProductType) => {
+                    const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    item.slug = slug;
+                  });
+                setProducts(res.data.result)
+            }
+            else setProducts([])
+        }
+
+        getEquipments()
         getFields()
         getFoods()
     }, [])
+
 
     return (
         <main className="flex min-h-screen flex-col items-center">
@@ -92,7 +108,7 @@ export default function Home(props: {products: any[]}) {
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3 mb-12">
-                <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
+                <ProductsCarousel items={products} slidePerView={sm ? 3 : md ? 5 : 6} />
             </div>
             <div className="w-[94%] mx-auto px-3 border border-[#ebebeb] flex flex-row justify-between max-sm:flex-col">
                 {policy.map((item, key) => (
@@ -113,10 +129,10 @@ export default function Home(props: {products: any[]}) {
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div className="mb-12">
-                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={products} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
                 <div className="mb-6">
-                    <ProductsCarousel items={productData} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <ProductsCarousel items={products} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
             <div className="w-[94%] mx-auto flex flex-row max-sm:flex-col">
@@ -153,3 +169,5 @@ export default function Home(props: {products: any[]}) {
         </main>
     );
 }
+
+export default Home

@@ -16,16 +16,15 @@ export const NavProduct: React.FC<NavProductProps> = (props) => {
 
     const { item } = props;
 
-    const price = formatCurrency(item.regularPrice)
 
     return (
         <div className="flex flex-row items-center py-2 w-full">
             <div className="w-[100px]">
-                <img src={item.galleryImages[0]} alt="pic" />
+                <img src={item.images[0]} alt="pic" />
             </div>
             <div className="pl-2 text-sm flex flex-col justify-between w-full">
                 <span className="line-clamp-2">{item.name}</span>
-                <span className="text-[#94c341] font-semibold ">{formatCash(price.cost) + ' ' + price.currency}</span>
+                <span className="text-[#94c341] font-semibold ">{item.price}</span>
             </div>
         </div>
     );

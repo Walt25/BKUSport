@@ -43,7 +43,6 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
 
     if (!product) return <div>Not found</div>;
 
-    const price = formatCurrency(product.regularPrice)
 
     const breadcrumb: BreadcrumbType[] = [
         {
@@ -87,24 +86,24 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
                         {
                                 <>
                                     <div className="flex flex-col justify-start">
-                                        {product.galleryImages.map((item, key) => (
+                                        {product.images.map((item, key) => (
                                             <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
                                                 <img src={item} alt="pic" className="border" />
                                             </div>
                                         ))}
                                     </div>
                                     <div className="flex-1">
-                                        <img src={product.galleryImages[currentThumbnail]} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
+                                        <img src={product.images[currentThumbnail]} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
                                     </div>
                                 </>
                         }
                         </div>
                         <div className="flex-1 ml-12 flex flex-col justify-start p-2 max-md:ml-0">
                             <h1 className="font-semibold text-lg">{product.name}</h1>
-                            <span className="text-[#AFAFAF] text-sm py-3">{product.sku}</span>
+                            <span className="text-[#AFAFAF] text-sm py-3">{product._id}</span>
                             <Divider />
-                            <span className="text-[#94c341] font-semibold text-xl pt-3">{formatCash(price.cost * quantity) + ' ' + price.currency}</span>
-                            {product.salePrice && <span className=" text-[#AFAFAF] font-light text-sm line-through">{formatCash(formatCurrency(product.salePrice).cost * quantity) + ' ' + formatCurrency(product.regularPrice).currency}</span>}
+                            <span className="text-[#94c341] font-semibold text-xl pt-3">{formatCash(product.price * quantity) + ' ' + '$'}</span>
+                            {product.price && <span className=" text-[#AFAFAF] font-light text-sm line-through">5%</span>}
                             <div className="pt-3">
                                 <Divider />
                             </div>
@@ -125,7 +124,7 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
                                 </button>
                             </div>
                             <Divider />
-                            <div className="flex flex-col pt-5 pb-3">
+                            {/* <div className="flex flex-col pt-5 pb-3">
                                 {
                                     
                                         <div className="flex flex-row pb-2 justify-between">
@@ -154,7 +153,7 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
                                             </table>
                                         </div>
                                 }
-                            </div>
+                            </div> */}
                            
 
                             <button className="w-fit bg-[#0490db] text-white px-16 py-3 mb-4">Add to cart</button>
@@ -163,7 +162,7 @@ export default function ProductDetail({ product, relatedProducts }: InferGetServ
                     </div>
                     <div className="mt-[3%] pb-12">
                          <h1 className="font-semibold text-lg pb-4">Mô tả</h1>
-                         <div dangerouslySetInnerHTML={{__html: product.description}}></div>
+                         {/* <div dangerouslySetInnerHTML={{__html: product.description}}></div> */}
                     </div>
                     <Divider />
                     <div className="mt-[3%] pb-3">
