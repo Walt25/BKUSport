@@ -34,17 +34,9 @@ const dashBoardItem: DashBoardItemType[] = [
                 link: '/admin/productlist'
             },
             {
-                title: 'Product',
-                link: 'product'
+                title: 'Field List',
+                link: '/admin/fieldlist'
             },
-            {
-                title: 'Category List',
-                link: 'categorylist'
-            },
-            {
-                title: 'Category',
-                link: 'category'
-            }
         ]
     },
     {
@@ -53,7 +45,7 @@ const dashBoardItem: DashBoardItemType[] = [
         advance: [
             {
                 title: 'Customers List',
-                link: 'customerlist'
+                link: '/admin/customerlist'
             },
             {
                 title: 'Customer',

@@ -19,10 +19,10 @@ const NAVIGATION = [
         title: "Trang chủ",
         link: "/",
     },
-    {
-        title: "Cửa hàng",
-        link: "/shop",
-    },
+    // {
+    //     title: "Cửa hàng",
+    //     link: "/shop",
+    // },
     {
         title: "Sản phẩm",
         link: "/products",

@@ -26,6 +26,7 @@ import { Chip } from '@mui/material';
 import { HiDotsVertical } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import axios from 'axios';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,12 +77,6 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: true,
     label: 'Products',
-  },
-  {
-    id: 'size',
-    numeric: true,
-    disablePadding: false,
-    label: 'Size',
   },
   {
     id: 'stock',
@@ -161,6 +156,8 @@ interface EnhancedTableToolbarProps {
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
 
+  const route = useRouter()
+
   return (
     <Toolbar
       sx={{
@@ -199,7 +196,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <button className='px-2 py-2 text-sm bg-[--primary-color] w-[100px] text-white rounded-md mr-2'>Add new</button>
+          <button className='px-2 py-2 text-sm bg-[--primary-color] w-[100px] text-white rounded-md mr-2' onClick={() => {route.push('/admin/productlist/addproduct')}}>Add new</button>
         </Tooltip>
       )}
     </Toolbar>
@@ -295,9 +292,10 @@ export default function EnhancedTable() {
       }
     })
     if (stock > 0) {
-      return <Chip label={`${stock} in stock`} color="primary" />
+      return <div className='py-[2px] px-[1px] text-xs rounded-md border border-blue-500 bg-blue-200'>{`${stock} in stock`}</div>
     }
-    return <Chip label={`out of stock`} color="error"/>
+    return <div className='py-[2px] px-[1px] text-xs rounded-md border border-red-500 bg-red-200'>out of stock</div>
+
 
   }
 
@@ -352,7 +350,7 @@ export default function EnhancedTable() {
                       scope="row"
                       padding="none"
                     >
-                      <div onClick={() => {route.push(`/admin/${row._id}`)}}>
+                      <div onClick={() => {route.push(`/admin/productlist/${row._id}`)}}>
                         <div className='flex flex-row items-center group'>
                           <img src={row.images[0]} alt="pic" className='w-[40px] h-[40px]'/>
                           <div className='flex flex-col pl-2'>
@@ -362,12 +360,7 @@ export default function EnhancedTable() {
                         </div>
                       </div> 
                     </TableCell>
-                    <TableCell align="center">
-                      <span>{`"${row.type[0].size}"`}</span>
-                      {
-                        row.type.slice(1).map(i => <span>{` | "${i.size}"`}</span>)
-                      }
-                    </TableCell>
+
                     <TableCell align="center">{checkStock(row.type)}</TableCell>
                     <TableCell align="center">{row.price} $</TableCell>
                   </TableRow>
