@@ -31,6 +31,7 @@ export const AdminLayout:React.FC<AdminLayoutProps> = ({children}) => {
                         {children}
                     </div>
                 </div>
+                <div id={"model-container"}></div>
             </div>
         </I18nProvider>
     )

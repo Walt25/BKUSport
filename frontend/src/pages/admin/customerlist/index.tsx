@@ -24,11 +24,22 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useRouter } from 'next/router'
 import { Checkbox } from '@mui/material'
+import { Model } from '@/components/Model'
 
-const MenuDot = () => {
+type MenuDotProps = {
+    onDelete: () => void
+    cancel?: boolean
+}
+
+export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
 
     const ref = useRef(null)
     const [showDropdown, setShowDropDown] = useState(false)
+
+    const handleClick = () => {
+        console.log('click')
+        onDelete()
+    }
 
     return (
         <div ref={ref}>
@@ -49,10 +60,19 @@ const MenuDot = () => {
                 </MenuItem>
                 <MenuItem disableRipple style={{ cursor: "default" }}>
                   <div>
-                    <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white">Xóa sân</a>
+                    <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleClick}>Xóa</a>
                   </div>
                 </MenuItem>
+                {
+                    cancel && 
+                    <MenuItem disableRipple style={{ cursor: "default" }}>
+                        <div>
+                            <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleClick}>Hủy đơn</a>
+                        </div>
+                    </MenuItem>
+                }
             </CustomMenu>
+            
         </div>
     )
 }
@@ -119,6 +139,7 @@ function CustomerList() {
     const [fields, setFields] = useState<FieldsType[]>([])
 
     const route = useRouter()
+    const [showModel, setShowModel] = useState(false)
     
 
     const breadcrumb = [
@@ -132,10 +153,11 @@ function CustomerList() {
         },
     ]
 
+    console.log(showModel)
 
     return (
         <div className="p-7 h-[100vh]">
-            <div className="py-4">
+            <div className="">
                 <Breadcrumb item={breadcrumb} />
             </div>
             <h1 className='text-3xl font-semibold py-6'>Customer</h1>
@@ -172,7 +194,7 @@ function CustomerList() {
                                 <Checkbox />
                             </TableCell>
                             <TableCell className='w-fit hover:underline cursor-pointer' onClick={() => {
-                                route.push(`/admin/fieldlist/6b2133wweewqeqe4`)
+                                route.push(`/admin/customerlist/6b2133wweewqeqe4`)
                             }}>
                                 <div className='flex flex-row items-center'>
                                     <img src={row.avatar} alt="pic" className='w-10 h-10 rounded-md'/>
@@ -192,7 +214,7 @@ function CustomerList() {
                                 {row.date_of_birth}
                             </TableCell>
                             <TableCell align="left">
-                                <MenuDot />
+                                <MenuDot onDelete={() => setShowModel(true)}/>
                             </TableCell>
                             </TableRow>
                         ))}
@@ -200,6 +222,26 @@ function CustomerList() {
                     </Table>
                 </TableContainer>
             </div>
+            {showModel && (
+                <Model
+                    onClose={() => setShowModel(false)}
+                    top='40%'
+                    bottom='40%'
+                    left='40%'
+                    right='40%'
+                    render={
+                        <div>
+                            <div className="flex flex-row w-[95%] mx-auto my-6 justify-center">
+                                <span>Xác nhận xóa?</span>
+                            </div>
+                            <div className="w-[94%] mx-auto flex flex-row justify-around">
+                                <button className="block text-sm font-medium border w-fit px-3 py-2 mt-2 text-red-500 dark:text-white border-red-500">Delete</button>
+                                <button className="block text-sm font-medium border w-fit px-3 py-2 mt-2 text-green-500 dark:text-white border-green-500">Cancel</button>
+                            </div>
+                        </div>
+                    }
+                />
+            )}
         </div>
     )
 }

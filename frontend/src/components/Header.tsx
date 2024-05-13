@@ -51,14 +51,6 @@ const NAVIGATION = [
           },
         ],
       },
-      {
-        title: "Thực phẩm chức năng",
-        link: "/shop",
-      },
-      {
-        title: "Thực phẩm chức năng",
-        link: "/shop",
-      },
   {
     title: "Tin tức",
     link: "/blog",

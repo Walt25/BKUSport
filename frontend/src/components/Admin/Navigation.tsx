@@ -1,7 +1,7 @@
 import { TbDashboard } from "react-icons/tb";
 import { BsFileText } from "react-icons/bs";
 import { LuUser2 } from "react-icons/lu";
-import { HiOutlineShoppingCart } from "react-icons/hi";
+import { HiOutlineShoppingCart, HiUserGroup } from "react-icons/hi";
 import { IoHeartOutline } from "react-icons/io5";
 import { MdMailOutline } from "react-icons/md";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { IoMdSettings} from "react-icons/io";
 import { ReactElement } from 'react';
 import { Dropdown } from "@/components/Admin/Dropdown";
+import { GiSoccerField } from "react-icons/gi";
 
 
 export type DashBoardItemType = {
@@ -33,10 +34,22 @@ const dashBoardItem: DashBoardItemType[] = [
                 title: 'Products List',
                 link: '/admin/productlist'
             },
+           
+        ]
+    },
+    {
+        title: 'Fields',
+        icon: <GiSoccerField   size={16}/>,
+        advance: [
             {
                 title: 'Field List',
                 link: '/admin/fieldlist'
             },
+            {
+                title: 'Field Orders',
+                link: '/admin/fieldlist/order'
+            },
+            
         ]
     },
     {
@@ -47,10 +60,7 @@ const dashBoardItem: DashBoardItemType[] = [
                 title: 'Customers List',
                 link: '/admin/customerlist'
             },
-            {
-                title: 'Customer',
-                link: 'customer'
-            },
+            
         ]
     },
     {
@@ -59,7 +69,7 @@ const dashBoardItem: DashBoardItemType[] = [
         advance: [
             {
                 title: 'Orders List',
-                link: 'orderlist'
+                link: '/admin/orderlist/1'
             },
             {
                 title: 'Order',
@@ -68,7 +78,17 @@ const dashBoardItem: DashBoardItemType[] = [
         ]
     },
     {
-        title: 'Orders',
+        title: 'Teams',
+        icon: <HiUserGroup  size={16}/>,
+        advance: [
+            {
+                title: 'Teams List',
+                link: "#"
+            }
+        ]
+    },
+    {
+        title: 'Coupons',
         icon: <IoHeartOutline size={16}/>,
         advance: [
             {
@@ -94,11 +114,6 @@ const dashBoardItem: DashBoardItemType[] = [
                 link: 'inboxconversation'
             },
         ]
-    },
-    {
-        title: 'Chat',
-        link: 'chat',
-        icon: <IoChatbubbleEllipsesOutline size={16}/>
     },
     {
         title: 'Calendar',

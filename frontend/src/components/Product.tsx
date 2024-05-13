@@ -113,36 +113,7 @@ export const Product: React.FC<ProductProps> = (props) => {
                             </div>
                             <div className="w-[94%] mx-auto flex flex-col">
                                 <h1 className="font-semibold text-[14px]">Mô tả</h1>
-                                {/* <div className="flex flex-col pt-5 pb-3">
-                                {
-                                    
-                                        <div className="flex flex-row pb-2 justify-between">
-                                            <table className="w-full">
-                                                <tbody>
-                                                    {
-                                                        item.attributes?.nodes && item.attributes?.nodes.map((item, key) => (
-                                                            <tr key={key}> 
-                                                                {
-                                                                    item.visible &&
-                                                                    <>
-                                                                        <td className="font-semibold text-sm w-[50%] p-2">{item.label}:</td>
-                                                                        {
-                                                                            item.options && item.options.map((o, key) => (
-                                                                                    <td key={key} className="text-sm">{o}</td>
-                                                                            ))
-                                                                        }
-                                                                    </>
-                                                                }
-                                                                
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                }
-                            </div> */}
+                                
                             </div>
                         </div>
                     }

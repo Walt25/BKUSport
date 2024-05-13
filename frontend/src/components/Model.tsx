@@ -4,9 +4,13 @@ import { createPortal } from "react-dom"
 type ModelProps = {
     onClose: () => void
     render: ReactElement
+    top?: string,
+    bottom?: string,
+    left?:string,
+    right?:string
 }
 
-export const Model:React.FC<ModelProps> = ({onClose, render}) => {
+export const Model:React.FC<ModelProps> = ({onClose, render, top, bottom, left, right}) => {
 
     const ref = useRef<Element | null>(null)
     const [mounted, setMounted] = useState(false)
@@ -37,10 +41,10 @@ export const Model:React.FC<ModelProps> = ({onClose, render}) => {
                     position: 'fixed',
                     padding: '10px',
                     backgroundColor: 'white',
-                    left: '20%',
-                    top: '20%',
-                    bottom: '20%',
-                    right: '20%',
+                    left: left || '20%',
+                    top: top || '20%',
+                    bottom: bottom || '20%',
+                    right: right || '20%',
                     borderRadius: '14px',
                     zIndex: 9999
                 }}>

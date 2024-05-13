@@ -71,7 +71,52 @@ function Addfield() {
         // else setSelectImage(selectImage.filter(i => i !== src))
 
     }
-
+    const timeTable = [
+        {
+            time:'5:00 - 6:30',
+            price: '300.000'
+        },
+        {
+            time:'6:30 - 8:00',
+            price: '300.000'
+        },
+        {
+            time:'8:00 - 9:30',
+            price: '300.000'
+        },
+        {
+            time:'9:30 - 11:00',
+            price: '300.000'
+        },
+        {
+            time:'11:00 - 12:30',
+            price: '300.000'
+        },
+        {
+            time:'13:30 - 15:00',
+            price: '300.000'
+        },
+        {
+            time:'15:00 - 16:30',
+            price: '300.000'
+        },
+        {
+            time:'16:30 - 18:00',
+            price: '300.000'
+        },
+        {
+            time:'18:00 - 19:30',
+            price: '300.000'
+        },
+        {
+            time: '19:30 - 21:00',
+            price: '300.000'
+        },
+        {
+            time: '21:00 - 22:30',
+            price: '300.000'
+        },
+    ]
 
 
     return (
@@ -83,8 +128,8 @@ function Addfield() {
               <span className="font-semibold text-2xl">Add Field</span>
               <button className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Save Field</button>
             </div>
-            <div className="flex flex-row">
-                <div className="w-[67%] mr-6 flex flex-col">
+            <div className="grid grid-cols-8 gap-4">
+                <div className="flex flex-col col-span-4">
                     <div className="bg-white my-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <h1 className="text-lg font-semibold">Basic Infomation</h1>
                         <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Name</label>
@@ -131,13 +176,13 @@ function Addfield() {
                                     setAttributes([...attributes, currenAttr])
                                     setAddAttribute(false)
                                 }} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Save</button> :
-                                <button onClick={()=> setAddAttribute(true)} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Add new</button>
+                                <button onClick={()=> setAddAttribute(true)} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Add   </button>
                             }
                         </div>
                     </div>
 
                 </div>
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col col-span-2">
                     <div className="bg-white  my-6 p-4  shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         {
                             selectImage.length > 0 ? 
@@ -159,25 +204,39 @@ function Addfield() {
                         <input multiple  onChange={handleImageUpload} className="block hidden w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" accept="image/*" />
                         
                     </div>
-                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                    <div className="bg-white p-4 mb-6 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                        <h1 className="text-lg font-semibold">Owner</h1>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Name</label>
-                                <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
-                            </div>
-                            <div>
-                                <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Contact</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
+                        <div className="bg-white p-4 mb-6 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                            <h1 className="text-lg font-semibold">Owner</h1>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Name</label>
+                                    <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
+                                </div>
+                                <div>
+                                    <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Contact</label>
+                                    <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                        <h1 className="text-lg font-semibold">Location</h1>
-                        <textarea  className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full"/>
-                    </div>   
-                    </div>
+                        <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                            <h1 className="text-lg font-semibold">Location</h1>
+                            <textarea  className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full"/>
+                        </div>   
+                </div>
+                <div className="flex-1 flex flex-col col-span-2">
+                    <div className="bg-white p-4 my-6 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <h1 className="text-lg font-semibold">Price</h1>
+                        {
+                            timeTable.map((time, key) => (
+                                <div className="flex flex-row items-center">
+                                    <div className="grid grid-cols-2 gap-3" key={key}>
+                                        <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full text-center" value={time.time} disabled/>
+                                        <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full"/>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div> 
+                      
                 </div>
             </div>
 
