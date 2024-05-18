@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb'
 import { signToken } from '~/utils/jwt'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import { RegisterReqBody } from '~/models/requests/User.requests'
-import { sendVerifyRegisterEmail } from '~/utils/email'
+import { sendOTPVerificationEmail, sendVerifyRegisterEmail } from '~/utils/email'
 import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
 
@@ -34,16 +34,23 @@ class UsersService {
   }
 
   async login({ user_id, role }: { user_id: string; role: string }) {
-    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
-      user_id: user_id.toString(),
-      role: role
+    const access_token  = await signToken({
+      payload: { userId: user_id, role: 'user', token_type: TokenType.AccessToken },
+      options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN }
+    })
+  
+    const refresh_token = await signToken({
+      payload: {  userId: user_id, role: 'user', token_type: TokenType.RefeshToken },
+      options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
     })
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token })
     )
     return {
       access_token,
-      refresh_token
+      refresh_token,
+      user_id, 
+      role
     }
   }
 
@@ -52,36 +59,29 @@ class UsersService {
     return Boolean(user)
   }
   async register(payload: RegisterReqBody) {
+
+    const emailExist = await this.checkEmailExist(payload.email)
+
+    if (emailExist) {
+      return {error: "This email are in used"}
+    }
+
     const result = await databaseService.users.insertOne(
       new User({
         ...payload,
-        role: '',
+        role: 'user',
+        verified: false,
         password: hashPassword(payload.password)
       })
     )
+    
     const user_id = result.insertedId.toString()
-    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
-      user_id: user_id.toString(),
-      role: ''
-    })
-    const email_verify_token = await this.signEmailVerifyToken({
-      user_id: user_id.toString(),
-      role: ''
-    })
-    await databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
-      {
-        $set: { email_verify_token: email_verify_token }
-      }
-    ])
-    await databaseService.refreshTokens.insertOne(
-      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token })
-    )
-    await sendVerifyRegisterEmail(payload.email, email_verify_token)
+    const respone = await sendOTPVerificationEmail(payload.email, user_id)
 
     return {
-      access_token,
-      refresh_token,
-      email_verify_token
+      user_id, 
+      role: 'user',
+      respone
     }
   }
 }

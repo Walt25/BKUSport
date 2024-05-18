@@ -14,6 +14,7 @@ interface Usertype {
   //Optional
   avatar?: string
   rental_id?: ObjectId[]
+  verified: boolean
 }
 
 export default class User {
@@ -29,6 +30,7 @@ export default class User {
   //Optional
   avatar: string
   rental_id: ObjectId[]
+  verified: boolean
 
   constructor(user: Usertype) {
     const date = new Date()
@@ -44,5 +46,6 @@ export default class User {
     //Optional
     this.avatar = user.avatar || ''
     this.rental_id = user.rental_id || []
+    this.verified = user.verified || false
   }
 }

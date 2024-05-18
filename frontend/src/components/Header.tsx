@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/logo.png";
 import Image from "next/image";
 import { BiSearch } from "react-icons/bi";
@@ -19,16 +19,14 @@ import Divider from "@mui/material/Divider";
 import { MiniCart } from "./Cart/MiniCart";
 import { useI18n } from "../hooks/useI18n";
 import { Language } from "./Language/Language";
+import { cookies } from 'next/headers'
+import { UserType, useCurrentUser } from "@/contexts/userContext";
 
 const NAVIGATION = [
     {
         title: "Trang chủ",
         link: "/",
     },
-    // {
-    //     title: "Cửa hàng",
-    //     link: "/shop",
-    // },
     {
         title: "Sản phẩm",
         link: "/products",
@@ -65,7 +63,8 @@ export const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
-
+  const {currentUser, setCurrentUser} = useCurrentUser()
+  
   const route = useRouter();
   const { t, locale, changeLocale } = useI18n();
 
@@ -137,6 +136,12 @@ export const Header = () => {
     ));
   };
 
+  const getJwtFromCookie = () => {    
+    return null; 
+  }
+
+
+  
   return (
     <div
       style={{ zIndex: 99 }}
@@ -175,20 +180,34 @@ export const Header = () => {
           <div className="w-8 h-8 rounded flex items-center justify-center mr-2 cursor-pointer hover:bg-[#ebedf0] max-md:hidden">
             <Language />
           </div>
-          <div
-            className="h-full pl-2 flex flex-row items-center cursor-pointer hover:bg-[#ebedf0]"
-            ref={userRef}
-            onClick={() => setShowUserMenu(true)}
-          >
-            <div className="w-8 h-8 rounded">
-              <img
-                className="bg-cover bg-center rounded"
-                src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
-                alt="pic"
-              />
-            </div>
-          </div>
-          <div className="w-8 h-8 rounded flex items-center justify-center mr-2 cursor-pointer hover:bg-[#ebedf0] md:hidden">
+          {
+            currentUser._id ? 
+              <div
+                className="h-full pl-2 flex flex-row items-center cursor-pointer hover:bg-[#ebedf0]"
+                ref={userRef}
+                onClick={() => setShowUserMenu(true)}
+              >
+                <div className="w-8 h-8 rounded mr-2">
+                  <img
+                    className="bg-cover bg-center rounded"
+                    src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
+                    alt="pic"
+                  />
+                </div>
+              </div> :
+              <div className="mx-10 ">
+                <span 
+                  className="cursor-pointer hover:underline hover:text-blue-500" 
+                  onClick={() => {route.push("/login")}}
+                >Login</span>
+                <span>/</span>
+                <span className="cursor-pointer hover:underline hover:text-blue-500"
+                   onClick={() => {route.push("/signup")}}>Register</span>
+              </div>
+
+          }
+          
+          <div className="w-8 h-8 rounded flex items-center justify-center mx-2 cursor-pointer hover:bg-[#ebedf0] md:hidden">
             <FaBars
               size={17}
               onClick={() => {
@@ -216,14 +235,19 @@ export const Header = () => {
             />
           </div>
           <div className="flex flex-col px-1 text-xs">
-            <span className="font-semibold">Konstantin Veselovsky</span>
-            <span>stroyka@example.com</span>
+            <span className="font-semibold">{currentUser.username}</span>
+            <span>{currentUser.email}</span>
           </div>
         </MenuItem>
         <MenuItem className="hover:text-[--primary-color] text-sm">
           <Link href={"profile"}>Thông tin tài khoản</Link>{" "}
         </MenuItem>
-        <MenuItem className="hover:text-[--primary-color] text-sm">
+        <MenuItem className="hover:text-[--primary-color] text-sm" onClick={() => {
+          setCurrentUser({} as UserType)
+          setShowUserMenu(false)
+          document.cookie = 'access_token=; Max-Age=0; path=/';
+          document.cookie = 'refresh_token=; Max-Age=0; path=/';
+        }}>
           Đăng xuất
         </MenuItem>
       </CustomMenu>

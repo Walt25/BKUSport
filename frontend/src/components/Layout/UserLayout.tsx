@@ -5,6 +5,7 @@ import { Footer } from "../Footer";
 import { Header } from "../Header";
 import { AdminLayout } from "./AdminLayout";
 import { ReactNode } from "react";
+import { CurrentUserContextProvider } from "@/contexts/userContext";
 
 
 type UserLayoutProp = {
@@ -14,19 +15,21 @@ type UserLayoutProp = {
 export const UserLayout:React.FC<UserLayoutProp> = ({children}) => {
     
     return (
-        <I18nProvider>
-            <div>
-                <div style={{ zIndex: 99 }} className="sticky top-0 w-full">
-                    <Header />
+        <CurrentUserContextProvider>
+            <I18nProvider>
+                <div>
+                    <div style={{ zIndex: 99 }} className="sticky top-0 w-full">
+                        <Header />
+                    </div>
+                    {
+                        children
+                    }
+                    <div className="w-[94%] mx-auto pt-6">
+                        <Footer />
+                    </div>
+                    <div id={"model-container"}></div>
                 </div>
-                {
-                    children
-                }
-                <div className="w-[94%] mx-auto pt-6">
-                    <Footer />
-                </div>
-                <div id={"model-container"}></div>
-            </div>
-        </I18nProvider>
+            </I18nProvider>
+        </CurrentUserContextProvider>
     );
 }

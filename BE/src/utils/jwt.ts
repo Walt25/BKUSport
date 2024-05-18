@@ -21,17 +21,17 @@ export const signToken = ({
   })
 }
 
-export const verifyToken = ({
-  token,
-  secretOrPublicKey = process.env.JWT_SECRET as string
-}: {
-  token: string
+export const verifyToken = (
+  token: string,
   secretOrPublicKey?: string
-}) => {
-  return new Promise<TokenPayload>((resolve, reject) => {
-    jwt.verify(token, secretOrPublicKey, (error, decoded) => {
-      if (error) reject(error)
-      resolve(decoded as TokenPayload)
-    })
-  })
+) => {
+  const secretKey = secretOrPublicKey || process.env.JWT_SECRET as string
+  // return new Promise<TokenPayload>((resolve, reject) => {
+  //   jwt.verify(token, secretKey, (error, decoded) => {
+  //     if (error) reject(error)
+  //     resolve(decoded as TokenPayload)
+  //   })
+  // })
+
+  return jwt.verify(token, secretKey) as jwt.JwtPayload
 }

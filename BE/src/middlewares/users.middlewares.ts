@@ -4,6 +4,9 @@ import { ParamSchema, check, checkSchema } from 'express-validator'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
 import usersService from '~/services/users.services'
+import { verifyToken } from '~/utils/jwt'
+import { ObjectId } from 'mongodb'
+
 export const loginValidator = validate(
   checkSchema(
     {
@@ -34,16 +37,6 @@ export const loginValidator = validate(
           },
           errorMessage: USERS_MESSAGE.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
         },
-        isStrongPassword: {
-          options: {
-            minLength: 6,
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minSymbols: 1
-          },
-          errorMessage: USERS_MESSAGE.PASSWORD_MUST_BE_STRONG
-        }
       }
     },
     ['body']
@@ -108,3 +101,29 @@ export const registerValidator = validate(
     ['body']
   )
 )
+
+
+export const authenticate = async (req: any, res: any, next: any) => {
+  let token;
+
+  token = req.headers.authorization
+
+  console.log(token)
+
+  if (token) {
+
+    const decoded = verifyToken(token)
+    console.log(decoded)
+      try {    
+          req.user = await databaseService.users.findOne({_id: new ObjectId(decoded.userId)})
+          next()
+      } catch (err) {
+          res.status(401)
+          throw new Error("authenticate false, token false")
+      }
+  }
+  else {
+      res.status(401)
+      throw new Error("authenticate false, no token")
+  }
+}

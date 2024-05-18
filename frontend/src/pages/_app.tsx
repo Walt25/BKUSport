@@ -52,7 +52,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
     console.log(route.pathname)
 
-    if (["/login", "/logout", "/signup"].includes(route.pathname)) return <Component {...pageProps} />;
+    if (["/login", "/logout", "/signup", "/verification/[...slug]"].includes(route.pathname)) return <Component {...pageProps} />;
     const getLayout = Component.getLayout;
 
     if (getLayout) {

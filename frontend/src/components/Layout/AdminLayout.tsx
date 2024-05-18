@@ -5,6 +5,7 @@ import { AdminNavbar } from "../../components/Admin/Navigation"
 import { ReactElement, useState } from "react"
 import { Header } from "../Header"
 import { I18nProvider } from "@/contexts/I18n"
+import { CurrentUserContextProvider } from "@/contexts/userContext"
 
 type AdminLayoutProps = {
     children: ReactElement
@@ -18,6 +19,8 @@ export const AdminLayout:React.FC<AdminLayoutProps> = ({children}) => {
     }
 
     return (
+        <CurrentUserContextProvider>
+
         <I18nProvider>
             <div className="flex flex-row w-full">
                 <div className="w-[200px]" hidden={openNavbar}>
@@ -34,5 +37,6 @@ export const AdminLayout:React.FC<AdminLayoutProps> = ({children}) => {
                 <div id={"model-container"}></div>
             </div>
         </I18nProvider>
+        </CurrentUserContextProvider>
     )
 }

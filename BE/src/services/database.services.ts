@@ -7,6 +7,7 @@ import Uniform from '~/models/schemas/Uniform.schema'
 import RentalPrice from '~/models/schemas/RentalPrice.schema'
 import Food from '~/models/schemas/Food.schema'
 import Equipment from '~/models/schemas/Equipment.schema'
+import UserOTPVerification from '~/models/schemas/OTP.schema'
 
 config()
 
@@ -33,6 +34,11 @@ class DatabaseService {
   get users(): Collection<User> {
     return this.db.collection(process.env.DB_USER_COLLECTION as string)
   }
+  
+  get otpVerification(): Collection<UserOTPVerification> {
+    return this.db.collection(process.env.DB_OTP_COLLECTION as string)
+  }
+
   get refreshTokens(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string)
   }
