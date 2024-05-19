@@ -39,7 +39,7 @@ export const registerController = async (
     })
   }
 
-  return res.status(404).json({message: result.error})
+  return res.json({message: result.error})
 
 }
 

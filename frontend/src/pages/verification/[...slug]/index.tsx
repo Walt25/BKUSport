@@ -21,6 +21,7 @@ export default function Verification({id}: InferGetServerSidePropsType<typeof ge
     const [otp, setOtp] = useState('')
     const router = useRouter()
     const {currentUser} = useCurrentUser()
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -35,9 +36,9 @@ export default function Verification({id}: InferGetServerSidePropsType<typeof ge
                     document.cookie = `refresh_token=${response.data.refresh_token}`
                     router.push('/')
                 }
-                else throw new Error(response.data.message)
+                else setError(response.data.message)
             } catch (error) {
-                console.error(error)
+                setError("can not send email, please check your network")
             }
         }
         
@@ -51,12 +52,15 @@ export default function Verification({id}: InferGetServerSidePropsType<typeof ge
                     <span className="text-sm pt-2">Please enter the 4 digit code sent to your email</span>
                 </div>
                 <div className="bg-white w-full divide-y divide-gray-200">
-                    <form className="px-5 py-7" onSubmit={handleSubmit}>
+                    <form className="px-5 pb-7" onSubmit={handleSubmit}>
                         <label className="font-semibold text-sm text-gray-600 pb-1 block">Code</label>
-                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" onChange={e => setOtp(e.target.value)}/>
+                        <input type="text" className="border rounded-lg px-3 py-2 mt-1 text-sm w-full" onChange={e => setOtp(e.target.value)}/>
+                        
+                        <div className={`text-sm ${error !== "" ? 'opacity-1' : 'opacity-0'} text-red-500 mt-3`}>* {error}</div>
+                        
                         <button
                             type="submit"
-                            className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+                            className="transition mt-3 duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
                         >
                             <span className="inline-block mr-2">Verify</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 inline-block">

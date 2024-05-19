@@ -74,19 +74,19 @@ export const registerValidator = validate(
         }
       },
       password: {
-        isString: { errorMessage: USERS_MESSAGE.PASSWORD_MUST_BE_STRING },
+        // isString: { errorMessage: USERS_MESSAGE.PASSWORD_MUST_BE_STRING },
         notEmpty: { errorMessage: USERS_MESSAGE.PASSWORD_IS_REQUIRED }
       },
       confirmPassword: {
-        isString: { errorMessage: USERS_MESSAGE.CONFIRM_PASSWORD_MUST_BE_STRING },
+        // isString: { errorMessage: USERS_MESSAGE.CONFIRM_PASSWORD_MUST_BE_STRING },
         notEmpty: { errorMessage: USERS_MESSAGE.CONFIRM_PASSWORD_IS_REQUIRED },
-        isLength: {
-          options: {
-            min: 6,
-            max: 50
-          },
-          errorMessage: USERS_MESSAGE.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
-        },
+        // isLength: {
+        //   options: {
+        //     min: 6,
+        //     max: 50
+        //   },
+        //   errorMessage: USERS_MESSAGE.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
+        // },
         custom: {
           options: (value, { req }) => {
             if (value !== req.body.password) {

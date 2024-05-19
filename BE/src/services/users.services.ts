@@ -7,6 +7,7 @@ import { RegisterReqBody } from '~/models/requests/User.requests'
 import { sendOTPVerificationEmail, sendVerifyRegisterEmail } from '~/utils/email'
 import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
+import { error } from 'console'
 
 class UsersService {
   private signAccessToken({ user_id, role }: { user_id: string; role: string }) {
@@ -59,11 +60,14 @@ class UsersService {
     return Boolean(user)
   }
   async register(payload: RegisterReqBody) {
-
     const emailExist = await this.checkEmailExist(payload.email)
 
     if (emailExist) {
       return {error: "This email are in used"}
+    }
+
+    if (payload.confirm_password !== payload.password) {
+      return {error: "Confirm password must be the same as password"}
     }
 
     const result = await databaseService.users.insertOne(
