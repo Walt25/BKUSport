@@ -100,7 +100,7 @@ export default function Login() {
                                             d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
                                         />
                                     </svg>
-                                    <span className="inline-block ml-1">Register</span>
+                                    <span className="inline-block ml-1" onClick={() => {router.push('/signup')}}>Register</span>
                                 </button>
                             </div>
                         </div>
@@ -109,7 +109,9 @@ export default function Login() {
                 <div className="py-5">
                     <div className="grid grid-cols-2 gap-1">
                         <div className="text-center sm:text-left whitespace-nowrap ">
-                            <button className="flex flex-row items-center transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                            <button
+                                onClick={() => {router.push('/')}}
+                                className="flex flex-row items-center transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                                 <FaArrowLeft />
                                 <span className="inline-block ml-1">Back to Home</span>
                             </button>
