@@ -6,6 +6,8 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { DenseMenu } from "@/components/Menu";
 import { AdminLayout } from "@/components/Layout/AdminLayout";
 import { UserLayout } from "@/components/Layout/UserLayout";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProductList() {
 
@@ -20,40 +22,42 @@ function ProductList() {
         },
     ]
 
-    const menuList: ReactElement[] = [
-        <div className="font-semibold">Filter</div>,
-        <RangeSlider />,
-        <GroupCheckboxes input={{
-            title: "Categories",
-            listItem: [
-                'Power tools',
-                'Hand tools',
-                'Machine tools',
-                'Power machinery',
-                'Measurement'
-            ]
-        }} />,
-        <GroupCheckboxes input={{
-            title: "Product type",
-            listItem: [
-                'Simple',
-                'Variable',
-                'Digital',
-            ]
-        }} />,
-        <GroupCheckboxes input={{
-            title: "Brands",
-            listItem: [
-                'Brandix',
-                'FastWheels',
-                'FuelCorp',
-                'RedGate',
-                'Specter',
-                'TurboElectric'
+    // const menuList: ReactElement[] = [
+    //     <div className="font-semibold">Filter</div>,
+    //     <RangeSlider />,
+    //     <GroupCheckboxes input={{
+    //         title: "Categories",
+    //         listItem: [
+    //             'Power tools',
+    //             'Hand tools',
+    //             'Machine tools',
+    //             'Power machinery',
+    //             'Measurement'
+    //         ]
+    //     }} onChange={function (categories: string): void {
+    //         throw new Error("Function not implemented.");
+    //     } } />,
+    //     <GroupCheckboxes input={{
+    //         title: "Product type",
+    //         listItem: [
+    //             'Simple',
+    //             'Variable',
+    //             'Digital',
+    //         ]
+    //     }} />,
+    //     <GroupCheckboxes input={{
+    //         title: "Brands",
+    //         listItem: [
+    //             'Brandix',
+    //             'FastWheels',
+    //             'FuelCorp',
+    //             'RedGate',
+    //             'Specter',
+    //             'TurboElectric'
 
-            ]
-        }} />
-    ]
+    //         ]
+    //     }} />
+    // ]
 
     return (
         <div className="p-7">
@@ -61,13 +65,11 @@ function ProductList() {
                 <Breadcrumb item={breadcrumb} />
             </div>
             <div className="flex flex-row">
-                <div className="w-[18%]">
-                    <DenseMenu item={menuList} />
-                </div>
                 <div className="flex-1 ml-6">
                     <EnhancedTable />
                 </div> 
             </div>
+            <ToastContainer />
         </div>
     )
 }

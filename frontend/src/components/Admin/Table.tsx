@@ -79,10 +79,16 @@ const headCells: readonly HeadCell[] = [
     label: 'Products',
   },
   {
-    id: 'stock',
-    numeric: true,
+    id: 'category',
+    numeric: false,
     disablePadding: false,
-    label: 'Stock',
+    label: "Category"
+  },
+  {
+    id: 'tag',
+    numeric: false,
+    disablePadding: false,
+    label: "Tag"
   },
   {
     id: 'price',
@@ -216,11 +222,6 @@ export default function EnhancedTable() {
     const getEquipments = async () => {
       const res = await getAllEquipment()
       if (res.data.result.length > 0) {
-          res.data.result.forEach((item: ProductType) => {
-              const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-              item.slug = slug;
-            });
-          
           setProducts(res.data.result)
       }
       else { setProducts([])}
@@ -229,6 +230,8 @@ export default function EnhancedTable() {
     }
     getEquipments()
   }, [])
+
+  console.log(products)
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -350,19 +353,19 @@ export default function EnhancedTable() {
                       scope="row"
                       padding="none"
                     >
-                      <div onClick={() => {route.push(`/admin/productlist/${row._id}`)}}>
+                      <div onClick={() => {route.push(`/admin/productlist/${row._id}/${row.slug}`)}}>
                         <div className='flex flex-row items-center group'>
-                          <img src={row.images[0]} alt="pic" className='w-[40px] h-[40px]'/>
+                          <img src={row.images.data[0]} alt="pic" className='w-[40px] h-[40px]'/>
                           <div className='flex flex-col pl-2'>
-                            <span className='group-hover:underline'>{row.name}</span>
+                            <span className='group-hover:underline truncate w-[200px]'>{row.name}</span>
                             <span className='text-xs text-[#6c757d]'>ID: {row._id}</span>
                           </div>
                         </div>
                       </div> 
                     </TableCell>
-
-                    <TableCell align="center">{checkStock(row.type)}</TableCell>
-                    <TableCell align="center">{row.price} $</TableCell>
+                    <TableCell align="left">{row.category[0]}</TableCell>
+                    <TableCell align="left">{row.tag[0]}</TableCell>
+                    <TableCell align="center">{row.regularPrice} $</TableCell>
                   </TableRow>
                 );
               })}
