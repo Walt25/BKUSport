@@ -1,4 +1,6 @@
+import { ProductType } from "@/components/Product"
 import { AttributeType } from "@/pages/admin/fieldlist/[...slug]"
+import { getJwtFromCookie } from "@/ultils"
 import axios from "axios"
 
 export type AddProductType = {
@@ -11,7 +13,6 @@ export type AddProductType = {
     slug: string,
     attribute: AttributeType[],
     category: string[],
-    tag: string[]
 }
 
 export const upload = async (files: FormData) => {
@@ -36,7 +37,7 @@ export const addProduct = async (data: AddProductType) => {
         slug,
         attribute,
         category,
-        tag} = data
+    } = data
     const res = await axios.post('http://localhost:4000/equipments', {
         images, 
         name, 
@@ -47,8 +48,47 @@ export const addProduct = async (data: AddProductType) => {
         slug,
         attribute,
         category,
-        tag
     })
 
     return res
+}
+
+
+export const getProduct = async (id: string) => {
+    const res = axios.get(`http://localhost:4000/equipments/${id}`)
+    return res || {} as ProductType
+  }
+
+export const updateProductById = async (data: AddProductType, id: string) => {
+
+    if (getJwtFromCookie() === null) return {status: "error", message: "You have no permission"};
+
+    const {
+        images, 
+        name, 
+        type, 
+        regularPrice, 
+        discountPrice, 
+        description,
+        slug,
+        attribute,
+        category,
+    } = data
+
+    const res = await axios.put(`http://localhost:4000/equipments/${id}`, {
+        id,
+        images, 
+        name, 
+        type, 
+        regularPrice, 
+        discountPrice, 
+        description,
+        slug,
+        attribute,
+        category,
+    }, 
+        {headers: {Authorization: `${getJwtFromCookie()}`}}
+    )
+
+    return {status: "success", data: res};
 }

@@ -30,7 +30,6 @@ function AddProduct() {
     const [regularPrice, setRegularPrice] = useState<string>('')
     const [discountPrice, setDiscountPrice] = useState<string>('')
     const [attributes, setAttributes] = useState<AttributeType[]>([])
-    const [tags, setTags] = useState<string[]>([])
     const [categories, setCategories] = useState<string[]>([]) 
     const [showModel, setShowModel] = useState(false)
     
@@ -116,7 +115,6 @@ function AddProduct() {
             slug,
             attribute: attributes,
             category: categories,
-            tag: tags
         })
 
         if (uploadProduct) {
@@ -130,11 +128,6 @@ function AddProduct() {
 
     const checkChecked = (src: string) => {
         return !!selectImage.find(i => i.url === src)
-    }
-
-    const handleChangeTag = (tags: string[]) => {
-        console.log(tags)
-        setTags(tags)
     }
 
     const handleChangeCategories = (cate: string) => {
@@ -249,9 +242,6 @@ function AddProduct() {
                                 <input value={discountPrice} type="string" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" onChange={e => setDiscountPrice(e.target.value)}/>
                             </div>
                         </div>
-                    </div>
-                    <div className="bg-white mb-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                        <MultipleSelectChip names={['tag 1', 'tag 2']} onChange={handleChangeTag}/>
                     </div>
                     <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <GroupCheckboxes 

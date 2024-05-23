@@ -85,12 +85,6 @@ const headCells: readonly HeadCell[] = [
     label: "Category"
   },
   {
-    id: 'tag',
-    numeric: false,
-    disablePadding: false,
-    label: "Tag"
-  },
-  {
     id: 'price',
     numeric: true,
     disablePadding: false,
@@ -364,7 +358,6 @@ export default function EnhancedTable() {
                       </div> 
                     </TableCell>
                     <TableCell align="left">{row.category[0]}</TableCell>
-                    <TableCell align="left">{row.tag[0]}</TableCell>
                     <TableCell align="center">{row.regularPrice} $</TableCell>
                   </TableRow>
                 );

@@ -127,3 +127,12 @@ export const authenticate = async (req: any, res: any, next: any) => {
       throw new Error("authenticate false, no token")
   }
 }
+
+export const authorizeAdmin = (req: any, res: any, next: any) => {
+  if (req.user && req.user.role === "admin") {
+      next()
+  }
+  else {
+      res.status(401).json({message: 'you have no permission'})
+  }
+} 

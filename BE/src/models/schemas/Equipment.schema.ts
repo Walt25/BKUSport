@@ -20,7 +20,6 @@ interface EquipmentType {
   slug: string
   attribute: Attribute[]
   category: string[]
-  tag: string[]
 }
 
 export default class Equipment {
@@ -34,7 +33,6 @@ export default class Equipment {
   slug: string
   attribute: Attribute[]
   category: string[]
-  tag: string[]
   constructor(equipment: EquipmentType) {
     this._id = equipment._id
     this.images = equipment.images
@@ -46,6 +44,5 @@ export default class Equipment {
     this.slug = equipment.slug
     this.attribute = equipment.attribute
     this.category = equipment.category
-    this.tag = equipment.tag
   }
 }

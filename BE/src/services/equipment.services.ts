@@ -15,13 +15,34 @@ class EquipmentService {
         slug: body.slug,
         attribute: body.attribute,
         category: body.category,
-        tag: body.tag
       })
     )
     const equipment = await databaseService.equipments.findOne({ _id: new ObjectId(result.insertedId) })
     return equipment
   }
+  async updateEquipment(id: ObjectId, body: any) {
+    const result = await databaseService.equipments.updateOne({
+        _id: id
+      },
+      {
+        $set: {
+            images: body.images,
+            name: body.name,
+            type: body.type,
+            regularPrice: body.regularPrice,
+            discountPrice: body.discountPrice,
+            description: body.description,
+            slug: body.slug,
+            attribute: body.attribute,
+            category: body.category,
+        }
+      }
+    ) 
+      const equipment = await databaseService.equipments.findOne({ _id: new ObjectId(id) })
+      return equipment
+    }
 }
+
 
 const equipmentService = new EquipmentService()
 export default equipmentService

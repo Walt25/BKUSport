@@ -16,6 +16,9 @@ import { ImCancelCircle } from "react-icons/im";
 import { MultipleSelectChip } from "@/components/SelectChips";
 import { GroupCheckboxes } from "@/components/CheckboxList";
 import { createSlug } from "@/ultils";
+import { updateProductById } from "@/Api/product";
+import { Model } from '@/components/Model'
+import { useRouter } from "next/router";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -32,7 +35,6 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
     const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [loading, setLoading] = useState(true)
     const [description, setDescription] = useState("")
-    const [tags, setTags] = useState<string[]>([])
     const [categories, setCategories] = useState<string[]>([]) 
 
     const [name, setName] = useState('')
@@ -53,7 +55,10 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
     const [selectImage, setSelectImage] = useState<string[]>([])
     const [attributes, setAttributes] = useState<AttributeType[]>([])
     const [addAttribute, setAddAttribute] = useState(false)
-    
+    const [regularPrice, setRegularPrice]= useState("")
+    const [discountPrice, setDiscountPrice]= useState("")
+    const [showModel, setShowModel] = useState(false)
+    const route = useRouter()
     
     useEffect(() => {
         const getProductById = async () => {
@@ -68,10 +73,10 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
             else setProduct({} as ProductType)
             setLoading(false)
         }
-       getProductById()
+       getProductById() 
     }, [id])
 
-    if (!product) return <div>Not found</div>;
+    if (!product || !id) return <div>Not found</div>;
 
     const breadcrumb: BreadcrumbType[] = [
         {
@@ -140,11 +145,6 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
         setUploadImages(Array.from(upload))
     }
 
-    const handleChangeTag = (tags: string[]) => {
-        console.log(tags)
-        setTags(tags)
-    }
-
     const handleChangeCategories = (cate: string) => {
         if (categories.includes(cate)) {
             setCategories(categories.filter(i => i !== cate))
@@ -153,13 +153,35 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
             setCategories([...categories, cate])
         }
     }
-    
 
     const checkChecked = (src: string) => {
         return selectImage.includes(src)
     }
 
-    console.log(product.description)
+    const handleUpdate = async () => {
+        const data = {
+            images: product.images, 
+            name: name || product.name, 
+            type: [], 
+            regularPrice: regularPrice || product.regularPrice, 
+            discountPrice: discountPrice || product.discountPrice, 
+            description: description || product.description,
+            slug: slug || product.slug,
+            attribute: attributes.length > 0 ? attributes : product.attribute,
+            category: categories.length > 0 ? categories : product.category,
+        }
+        const res = await updateProductById(data, id)
+
+        if (res.status === "success") {
+            setShowModel(true)
+            setTimeout(() => {
+                setShowModel(false)
+                route.push('/admin/productlist')
+            }, 2000)
+        }
+    }
+
+    console.log(categories.length > 0 && categories || product.category)
 
     if (loading) return <div>Loading</div>
 
@@ -168,7 +190,10 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
             <div className="py-4">
                 <Breadcrumb item={breadcrumb} />
             </div>
-            <span className="font-semibold text-2xl">{product.name}</span>
+            <div className="flex flex-row items-center justify-between">
+                <span className="font-semibold text-2xl">{product.name}</span>
+                <button className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500" onClick={handleUpdate}>Update Product</button>
+            </div>
             <div className="flex flex-row">
                 <div className="w-[67%] mr-6 flex flex-col">
                     <div className="bg-white my-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
@@ -255,16 +280,13 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Regular Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.regularPrice}/>
+                                <input onChange={e => setRegularPrice(e.target.value)} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={regularPrice || product.regularPrice}/>
                             </div>
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Discount Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.discountPrice}/>
+                                <input onChange={e => setDiscountPrice(e.target.value)} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={regularPrice || product.discountPrice}/>
                             </div>
                         </div>
-                    </div>
-                    <div className="bg-white mb-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                        <MultipleSelectChip selectedTag={product.tag} names={['tag 1', 'tag 2']} onChange={handleChangeTag}/>
                     </div>
                     <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <GroupCheckboxes 
@@ -297,7 +319,26 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                     </div>
                 </div>
             </div>
-
+            {showModel && (
+                <Model
+                    top='40%'
+                    bottom='40%'
+                    left='40%'
+                    right='40%'
+                    onClose={() => setShowModel(false)}
+                    render={
+                        <div>
+                            <div className="flex flex-col w-[95%] mx-auto my-6 justify-center items-center">
+                                
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAuR_JFau6CIfKcvOtNqUtxSUoAPRsL483mbvJjEvtKA&s" alt="pic"
+                                    className='w-[60px]'
+                                />
+                                <span className='pt-3'>Thêm thành công</span>
+                            </div>
+                        </div>
+                    }
+                />
+            )}
         </div>
     );
 }

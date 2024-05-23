@@ -60,13 +60,13 @@ export const MultipleSelectChip: React.FC<MultipleSelectChipProps> = ({names, se
           value={personName}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Tags" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
+          // renderValue={(selected) => (
+          //   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+          //     {selected.map((value) => (
+          //       <Chip key={value} label={value} />
+          //     ))}
+          //   </Box>
+          // )}
           MenuProps={MenuProps}
         >
           {names.map((name) => (

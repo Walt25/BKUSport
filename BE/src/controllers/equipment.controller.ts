@@ -38,3 +38,12 @@ export const uploadImages = async (req: any, res: any) => {
   })
   res.status(200).json({ data: images });
 }
+
+export const updateProductById = async (req: any, res: any) => {
+  const product_id = req.body.id
+  const result = await equipmentService.updateEquipment(new ObjectId(product_id), req.body)
+  return res.json({
+    message: 'add new equipment successfully',
+    result
+  })
+}

@@ -3,9 +3,11 @@ import {
   addEquipmentController,
   uploadImages,
   getAllEquipmentController,
-  getEquipmentByIdController
+  getEquipmentByIdController,
+  updateProductById
 } from '~/controllers/equipment.controller'
 import { uploadMiddleware } from '~/middlewares/fileUpload.middlewares'
+import { authenticate, authorizeAdmin } from '~/middlewares/users.middlewares'
 
 import { wrapRequestHanlder } from '~/utils/handler'
 
@@ -16,9 +18,13 @@ equipmentRouter.get('/', wrapRequestHanlder(getAllEquipmentController))
 
 equipmentRouter.post('/', wrapRequestHanlder(addEquipmentController))
 
-equipmentRouter.get('/:equipment_id', wrapRequestHanlder(getEquipmentByIdController))
-
+equipmentRouter.route('/:equipment_id')
+    .get(wrapRequestHanlder(getEquipmentByIdController))
+    .put(authenticate, authorizeAdmin, updateProductById)
+    // .delete(authenticate, authorizeAdmin, deleteUserById)  
 equipmentRouter.post('/upload', wrapRequestHanlder(uploadMiddleware), uploadImages)
+
+
 
 
 
