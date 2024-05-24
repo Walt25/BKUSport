@@ -2,10 +2,10 @@ import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses'
 import { config } from 'dotenv'
 import fs from 'fs'
 import path from 'path'
-import { Request, Response, NextFunction } from 'express';
-import databaseService from '~/services/database.services';
-import UserOTPVerification from '~/models/schemas/OTP.schema';
-var nodemailer =  require('nodemailer')
+import { Request, Response, NextFunction } from 'express'
+import databaseService from '~/services/database.services'
+import UserOTPVerification from '~/models/schemas/OTP.schema'
+var nodemailer = require('nodemailer')
 const bcrypt = require('bcrypt')
 config()
 
@@ -100,19 +100,18 @@ let transporter = nodemailer.createTransport({
 })
 
 export const sendOTPVerificationEmail = async (email: string, _id: string) => {
-
   try {
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
 
     const mailOption = {
       from: process.env.AUTH_EMAIL,
       to: email,
-      subject: "Verify your email",
+      subject: 'Verify your email',
       html: `<p>Enter ${otp} in the app to verify your email</p><p>This code exprires in 1 hour</p>`
     }
 
     const saltround = 10
-    const hashedOTP = await bcrypt.hash(otp, saltround) 
+    const hashedOTP = await bcrypt.hash(otp, saltround)
 
     await databaseService.otpVerification.insertOne(
       new UserOTPVerification({
@@ -126,16 +125,55 @@ export const sendOTPVerificationEmail = async (email: string, _id: string) => {
     await transporter.sendMail(mailOption)
     return {
       status: 'PENDING',
-      message: "Verification OTP email sent",
+      message: 'Verification OTP email sent',
       data: {
         userId: _id,
         email
-      },
+      }
     }
-
   } catch (error: any) {
     return {
-      status: "FALSED",
+      status: 'FALSED',
+      message: error.message
+    }
+  }
+}
+
+export const sendOTPForgotPassword = async (email: string, _id: string) => {
+  try {
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`
+
+    const mailOption = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: 'Your reset password OTP',
+      html: `<p>Enter ${otp} in the app to reset your password</p><p>This code exprires in 1 hour</p>`
+    }
+
+    const saltround = 10
+    const hashedOTP = await bcrypt.hash(otp, saltround)
+
+    await databaseService.otpVerification.insertOne(
+      new UserOTPVerification({
+        userId: _id,
+        otp: hashedOTP,
+        createAt: Date.now(),
+        exprireAt: Date.now() + 3600000
+      })
+    )
+
+    await transporter.sendMail(mailOption)
+    return {
+      status: 'PENDING',
+      message: 'Forgot password OTP email sent',
+      data: {
+        userId: _id,
+        email
+      }
+    }
+  } catch (error: any) {
+    return {
+      status: 'FALSED',
       message: error.message
     }
   }

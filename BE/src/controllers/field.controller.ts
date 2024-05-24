@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { ObjectId } from 'mongodb'
 import databaseService from '~/services/database.services'
 import fieldService from '~/services/field.services'
 
@@ -23,6 +24,16 @@ export const getFieldByIdController = async (req: Request, res: Response) => {
   const result = await fieldService.getFieldById(field_id)
   return res.json({
     message: 'get a field successfully',
+    result
+  })
+}
+
+export const orderFieldController = async (req: Request, res: Response) => {
+  const field_id = new ObjectId(req.params.field_id)
+  const { name, email, phone, start } = req.body
+  const result = fieldService.rentField(req.user?._id, field_id, start)
+  return res.json({
+    message: 'rent a field successfully',
     result
   })
 }
