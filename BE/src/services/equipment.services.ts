@@ -9,8 +9,13 @@ class EquipmentService {
         images: body.images,
         name: body.name,
         type: body.type,
-        price: body.price,
-        description: body.description
+        regularPrice: body.regularPrice,
+        discountPrice: body.discountPrice,
+        description: body.description,
+        slug: body.slug,
+        attribute: body.attribute,
+        category: body.category,
+        tag: body.tag
       })
     )
     const equipment = await databaseService.equipments.findOne({ _id: new ObjectId(result.insertedId) })

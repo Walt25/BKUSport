@@ -13,6 +13,8 @@ config()
 databaseService.connect()
 const port = 4000
 
+
+
 // Route chào mừng
 const app = express()
 app.use(express.json())
@@ -23,7 +25,9 @@ app.use('/fields', fieldRouter)
 app.use('/uniforms', uniformRouter)
 app.use('/foods', foodRouter)
 app.use('/equipments', equipmentRouter)
+app.use('/images', express.static('src/images'))
 app.use(defaultErrorHandler)
+
 
 const httpServer = app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

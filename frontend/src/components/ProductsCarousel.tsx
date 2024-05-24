@@ -7,7 +7,6 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { StaticImageData } from "next/image";
 import React from "react";
 import { Product, ProductType } from "./Product";
 

@@ -11,9 +11,11 @@ import { TextEditor } from "@/components/TextEditor";
 import axios from "axios";
 import { MdCancelPresentation } from "react-icons/md";
 import { Checkbox } from "@mui/material";
-import { ProductImage } from "@/components/ProductImage";
 import { FaTrash } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
+import { MultipleSelectChip } from "@/components/SelectChips";
+import { GroupCheckboxes } from "@/components/CheckboxList";
+import { createSlug } from "@/ultils";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -30,12 +32,27 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
     const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [loading, setLoading] = useState(true)
     const [description, setDescription] = useState("")
+    const [tags, setTags] = useState<string[]>([])
+    const [categories, setCategories] = useState<string[]>([]) 
 
-    const [listImage, setListImage] = useState<FileList>({} as FileList)
-    const [selectImage, setSelectImage] = useState<File[]>([])
+    const [name, setName] = useState('')
+    const [slug, setSlug] = useState('')
+    
+    const [addCategory, setAddCategory] = useState(false)
+    const [currenAttr, setCurrenAttr] = useState<AttributeType>({} as AttributeType)
+    const [currentCate, setCurrenCate] = useState<string>('')
+    const [category, setCategory] = useState<string[]>([
+        'Volleyball',
+        'Soccer',
+        'Badminton',
+        'Tennis',
+        'Basketball'
+    ])
+
+    const [uploadImages, setUploadImages] = useState<string[]>([])
+    const [selectImage, setSelectImage] = useState<string[]>([])
     const [attributes, setAttributes] = useState<AttributeType[]>([])
     const [addAttribute, setAddAttribute] = useState(false)
-    const [currenAttr, setCurrenAttr] = useState<AttributeType>({} as AttributeType)
     
     
     useEffect(() => {
@@ -53,7 +70,6 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
         }
        getProductById()
     }, [id])
-
 
     if (!product) return <div>Not found</div>;
 
@@ -94,23 +110,56 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
     const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
         const file = event.target.files
-        console.log(file)
-        setListImage(file)
+        let upload: string[] = []
+        for (let i = 0; i < file.length; i++) {
+            upload.push(URL.createObjectURL(file[i]))
+        }
+        setUploadImages(uploadImages.concat(upload))
 
     };
 
     const handleCheck = (src: string) => {
-        // console.log(selectImage.includes(src), src, selectImage)
-        // if (!selectImage.includes(src)) {
-        //     setSelectImage([...selectImage, src])
-        // }
-        // else setSelectImage(selectImage.filter(i => i !== src))
-
+        if (!selectImage.includes(src)) {
+            setSelectImage([...selectImage, src])
+        }
+        else {
+            setSelectImage(selectImage.filter(i => i !== src))
+        }
     }
 
-    const handleSetAttribute = () => {
-
+    const handleDeleteImage = () => {
+        const upload = new Set(uploadImages)
+        const select = new Set(selectImage)
+        selectImage.map(i => {
+            if(upload.has(i)) {
+                upload.delete(i)
+                select.delete(i)
+            }
+        })
+        setSelectImage(Array.from(select))
+        setUploadImages(Array.from(upload))
     }
+
+    const handleChangeTag = (tags: string[]) => {
+        console.log(tags)
+        setTags(tags)
+    }
+
+    const handleChangeCategories = (cate: string) => {
+        if (categories.includes(cate)) {
+            setCategories(categories.filter(i => i !== cate))
+        }
+        else {
+            setCategories([...categories, cate])
+        }
+    }
+    
+
+    const checkChecked = (src: string) => {
+        return selectImage.includes(src)
+    }
+
+    console.log(product.description)
 
     if (loading) return <div>Loading</div>
 
@@ -119,26 +168,27 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
             <div className="py-4">
                 <Breadcrumb item={breadcrumb} />
             </div>
-            <span className="font-semibold text-2xl">Edit Product</span>
+            <span className="font-semibold text-2xl">{product.name}</span>
             <div className="flex flex-row">
                 <div className="w-[67%] mr-6 flex flex-col">
                     <div className="bg-white my-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <h1 className="text-lg font-semibold">Basic Infomation</h1>
                         <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Name</label>
-                        <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.name}/>
+                        <input onChange={e => {
+                            setName(e.target.value)
+                            setSlug(createSlug(e.target.value))
+                        }} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={name || product.name}/>
                         <label className="font-semibold text-sm text-gray-600 pb-2 pt-3 block">Slug</label>
                         <div className="border mb-1 rounded-sm border-[#ced4da] flex flex-row items-center">
                             <div className="px-3 bg-[#e9ecef] py-2 border-r border-[#ced4da]">https://example.com/products/</div>
-                            <input type="text" className="py-2 outline-none px-3 text-sm w-full" value={product.slug}/>
+                            <input type="text" className="py-2 outline-none px-3 text-sm w-full" value={slug || product.slug}/>
                         </div>
                         <span className="text-[14px]">Unique human-readable product identifier. No longer than 255 characters.</span>
                         <label className="font-semibold text-sm text-gray-600 pb-2 pt-3 block">Description</label>
-                        <TextEditor onChange={setDescription} content={description}/>
-                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Short Description</label>
-                        <textarea className="min-h-[100px] border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.slug}/>
+                        <textarea onChange={e => setDescription(e.target.value)} className="min-h-[100px] border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={description || product.description}/>
                         <h1 className="text-lg font-semibold">Attribute</h1>
                         {
-                            attributes.length > 0 && attributes.map((attribute, key) => (
+                            product.attribute.length > 0 && product.attribute.map((attribute, key) => (
                                 <div className="flex flex-row items-center">
                                     <div className="grid grid-cols-4 gap-3" key={key}>
                                         <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={attribute.title} disabled/>
@@ -186,9 +236,13 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                         }
                         <div className="grid grid-cols-3 gap-4 border p-2">
                             {
-                                product.images.length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
-                                product.images.map((i, key) => (
-                                    <ProductImage src={i} onCheck={handleCheck} key={key}/>
+                                product.images.data.length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
+                                product.images.data.map((i, key) => (
+                                    <div key={key}>
+                                        <div className="group border relative"><img className="max-h-[130px] w-full" src={i} alt="pic"/>
+                                            <Checkbox className={`hover:bg-white p-0 m-0 ${!checkChecked(i) && "hidden"} rounded-none group-hover:flex absolute top-0 right-0 bg-white`} checked={checkChecked(i)} onChange={() => handleCheck(i)}/>
+                                        </div>
+                                    </div>
                                 ))
                             }
                         </div>
@@ -201,13 +255,45 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Regular Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.price}/>
+                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.regularPrice}/>
                             </div>
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Discount Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.price}/>
+                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.discountPrice}/>
                             </div>
                         </div>
+                    </div>
+                    <div className="bg-white mb-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <MultipleSelectChip selectedTag={product.tag} names={['tag 1', 'tag 2']} onChange={handleChangeTag}/>
+                    </div>
+                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <GroupCheckboxes 
+                            input={{
+                                title: "Categories",
+                                listItem: category
+                            }}
+                            onChange={handleChangeCategories} 
+                            checkedItems={categories.length > 0 && categories || product.category}
+                        />
+                        {
+                            addCategory && (
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Category</label>
+                                        <input onChange={e => setCurrenCate(e.target.value)} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
+                                    </div>
+                                    
+                                </div>
+                            )
+                        }
+                        {
+                            addCategory ? <button onClick={()=>{
+                                currentCate !== '' && setCategory([...category, currentCate])
+                                setAddCategory(false)
+                            }} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Save</button> :
+                            <button onClick={()=> setAddCategory(true)} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Add new</button>
+                        }
+
                     </div>
                 </div>
             </div>

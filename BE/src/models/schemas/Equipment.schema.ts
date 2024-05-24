@@ -4,14 +4,23 @@ interface Type {
   stock: number
   size: string
 }
+interface Attribute {
+  title: string,
+  content: string
+}
 
 interface EquipmentType {
   _id?: ObjectId
   images: string[]
   name: string
   type: Type[]
-  price: number
+  regularPrice: string,
+  discountPrice: string
   description: string
+  slug: string
+  attribute: Attribute[]
+  category: string[]
+  tag: string[]
 }
 
 export default class Equipment {
@@ -19,14 +28,24 @@ export default class Equipment {
   images: string[]
   name: string
   type: Type[]
-  price: number
+  regularPrice: string
+  discountPrice: string
   description: string
-  constructor(uniform: EquipmentType) {
-    this._id = uniform._id
-    this.images = uniform.images
-    this.name = uniform.name
-    this.type = uniform.type
-    this.price = uniform.price
-    this.description = uniform.description
+  slug: string
+  attribute: Attribute[]
+  category: string[]
+  tag: string[]
+  constructor(equipment: EquipmentType) {
+    this._id = equipment._id
+    this.images = equipment.images
+    this.name = equipment.name
+    this.type = equipment.type
+    this.regularPrice = equipment.regularPrice
+    this.discountPrice = equipment.discountPrice
+    this.description = equipment.description
+    this.slug = equipment.slug
+    this.attribute = equipment.attribute
+    this.category = equipment.category
+    this.tag = equipment.tag
   }
 }

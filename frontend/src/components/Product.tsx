@@ -5,16 +5,11 @@ import { AiOutlineForm } from "react-icons/ai";
 import { FaShoppingCart, FaRegFileAlt } from "react-icons/fa";
 import { Model } from "./Model";
 import { ImCancelCircle } from "react-icons/im";
+import { AddProductType } from "@/Api/product";
 
 export type ProductType = {
     _id: string;
-    name: string;
-    slug: string;
-    price: number;
-    type: {stock: number, size: string}[]
-    images: string[]
-    
-};
+} & AddProductType
 
 type ProductProps = {
     item: ProductType;
@@ -30,16 +25,16 @@ export const Product: React.FC<ProductProps> = (props) => {
     return (
         <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
             <Link href={`/products/${item._id}/${item.slug}`}>
-                <div className="overflow-hidden"><img src={item.images[0]} alt={"pic"} className="rounded" /></div>
+                <div className="overflow-hidden"><img src={item.images.data[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
                     <Link href={`/products/${item._id}/${item.slug}`}>{item.name} </Link>
                 </span>
 
-                <span className="font-semibold text-[#78a206] py-2">{item.price + ' ' + "$"}</span>
+                <span className="font-semibold text-[#78a206] py-2">{item.regularPrice + ' ' + "$"}</span>
             </div>
-            {item.price && <div className="bg-[#94c341] text-white absolute top-1 right-1 px-2 py-0.5 rounded text-xs">-{"5%"}</div>}
+            {item.regularPrice && <div className="bg-[#94c341] text-white absolute top-1 right-1 px-2 py-0.5 rounded text-xs">-{"5%"}</div>}
 
             <div className="opacity-0 group-hover:opacity-100 transition-opacity ease-in-out duration-500 flex flex-col justify-center items-center p-3">
                 <div className="w-full px-4">
@@ -69,14 +64,14 @@ export const Product: React.FC<ProductProps> = (props) => {
                                 <div className="flex flex-row justify-evenly w-[50%]">
                                         <>
                                             <div className="flex flex-col justify-start">
-                                                {item.images.map((item, key) => (
+                                                {item.images.data.map((item, key) => (
                                                     <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
                                                         <img src={item} alt="pic" className="border" />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="flex-1">
-                                                <img src={item.images[currentThumbnail]} alt="pic" className="border w-full ml-4 mr-2 my-2" />
+                                                <img src={item.images.data[currentThumbnail]} alt="pic" className="border w-full ml-4 mr-2 my-2" />
                                             </div>
                                         </>
                                     
@@ -90,7 +85,7 @@ export const Product: React.FC<ProductProps> = (props) => {
                                     </div>
                                     <span className="text-[#AFAFAF] text-sm py-3">{item._id}</span>
                                     <Divider />
-                                    <span className="text-[#94c341] font-semibold text-lg py-3">{item.price + ' ' + '$'}</span>
+                                    <span className="text-[#94c341] font-semibold text-lg py-3">{item.regularPrice + ' ' + '$'}</span>
                                     <Divider />
                                     <div className="flex flex-row items-center py-5">
                                         <button

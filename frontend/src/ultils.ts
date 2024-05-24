@@ -24,3 +24,7 @@ export function getJwtFromCookie() {
     }
     return null;
   }
+
+  export const createSlug = (str: string) => {
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/ /g, '-');
+  }

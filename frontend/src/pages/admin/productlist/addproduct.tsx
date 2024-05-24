@@ -1,25 +1,53 @@
 import { AdminLayout } from '@/components/Layout/AdminLayout'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { AttributeType } from './[...slug]'
 import { Breadcrumb, BreadcrumbType } from '@/components/Breadcrumb'
 import { ProductType } from '@/components/Product'
 import { TextEditor } from '@/components/TextEditor'
-import { ProductImage } from '@/components/ProductImage'
 import { FaTrash } from 'react-icons/fa'
 import { ImCancelCircle } from 'react-icons/im'
+import { Checkbox } from '@mui/material'
+import { GroupCheckboxes } from '@/components/CheckboxList'
+import {MultipleSelectChip} from '@/components/SelectChips'
+import { addProduct, upload } from '@/Api/product'
+import { createSlug } from '@/ultils'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router'
+import { Model } from '@/components/Model'
+
+type ImageUploadType = {
+    url: string,
+    file: File
+}
 
 function AddProduct() {
-    const [product, setProduct] = useState<ProductType>({} as ProductType)
+    // const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [description, setDescription] = useState("")
-
-    const [listImage, setListImage] = useState<FileList>({} as FileList)
-    const [selectImage, setSelectImage] = useState<File[]>([])
+    const [name, setName] = useState<string>('')
+    const [slug, setSlug] = useState<string>('')
+    const [uploadImages, setUploadImages] = useState<ImageUploadType[]>([])
+    const [regularPrice, setRegularPrice] = useState<string>('')
+    const [discountPrice, setDiscountPrice] = useState<string>('')
     const [attributes, setAttributes] = useState<AttributeType[]>([])
-    const [addAttribute, setAddAttribute] = useState(false)
+    const [tags, setTags] = useState<string[]>([])
+    const [categories, setCategories] = useState<string[]>([]) 
+    const [showModel, setShowModel] = useState(false)
+    
+    const [addCategory, setAddCategory] = useState(false)
     const [currenAttr, setCurrenAttr] = useState<AttributeType>({} as AttributeType)
+    const [currentCate, setCurrenCate] = useState<string>('')
+    const [category, setCategory] = useState<string[]>([
+        'Volleyball',
+        'Soccer',
+        'Badminton',
+        'Tennis',
+        'Basketball'
+    ])
+    const [addAttribute, setAddAttribute] = useState(false)
+    const [selectImage, setSelectImage] = useState<ImageUploadType[]>([])
 
-
-    if (!product) return <div>Not found</div>;
+    const route = useRouter()
 
     const breadcrumb: BreadcrumbType[] = [
         {
@@ -36,69 +64,115 @@ function AddProduct() {
         }
     ];
     
-
-    const comments = [
-        {
-            username: 'Đặng Gia Hân',
-            starRate: 5,
-            comment: 'Hiệu năng Mượt mà, đa nhiệm tốt'
-        },
-        {
-            username: 'Đoàn Minh Đức',
-            starRate: 5,
-            comment: 'Chất lượng hiển thị của màn hình Siêu đẹp'
-        },
-        {
-            username: 'Ngọc Nhã Dy Hồ',
-            starRate: 5,
-            comment: 'Hiệu năng Mượt mà, đa nhiệm tốt'
-        }   
-    ]
+    useEffect(() => {
+        setSlug(createSlug(name))
+    }, [name])
 
     const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
         const file = event.target.files
-        console.log(file)
-        setListImage(file)
-
+        let upload: ImageUploadType[] = []
+        for (let i = 0; i < file.length; i++) {
+            upload.push({url: URL.createObjectURL(file[i]), file: file[i]})
+        }
+        setUploadImages(uploadImages.concat(upload))
     };
 
-    const handleCheck = (src: string) => {
-        // console.log(selectImage.includes(src), src, selectImage)
-        // if (!selectImage.includes(src)) {
-        //     setSelectImage([...selectImage, src])
-        // }
-        // else setSelectImage(selectImage.filter(i => i !== src))
-
+    const handleCheck = (image: ImageUploadType) => {
+        if (!selectImage.find(i => i.url === image.url)) {
+            setSelectImage([...selectImage, image])
+        }
+        else {
+            setSelectImage(selectImage.filter(i => i.url !== image.url))
+        }
     }
 
-    const handleSetAttribute = () => {
-
+    const handleDeleteImage = () => {
+        const upload = new Set(uploadImages)
+        const select = new Set(selectImage)
+        selectImage.map(i => {
+            if(upload.has(i)) {
+                upload.delete(i)
+                select.delete(i)
+            }
+        })
+        setSelectImage(Array.from(select))
+        setUploadImages(Array.from(upload))
     }
 
+    const handleSubmit = async () => {
+        const formData = new FormData()
+            uploadImages.forEach((images) => {
+                formData.append(`images`, images.file);
+            });
+        const uploadImage = await upload(formData)
+        const uploadProduct = await addProduct({
+            images: uploadImage.data, 
+            name, 
+            type: [], 
+            regularPrice, 
+            discountPrice, 
+            description,
+            slug,
+            attribute: attributes,
+            category: categories,
+            tag: tags
+        })
+
+        if (uploadProduct) {
+            setShowModel(true)
+            setTimeout(() => {
+                setShowModel(false)
+                route.push('/admin/productlist')
+            }, 2000)
+        }
+    }
+
+    const checkChecked = (src: string) => {
+        return !!selectImage.find(i => i.url === src)
+    }
+
+    const handleChangeTag = (tags: string[]) => {
+        console.log(tags)
+        setTags(tags)
+    }
+
+    const handleChangeCategories = (cate: string) => {
+        if (categories.includes(cate)) {
+            setCategories(categories.filter(i => i !== cate))
+        }
+        else {
+            setCategories([...categories, cate])
+        }
+    }
 
     return (
         <div className="px-7 py-4">
             <div className="py-4">
                 <Breadcrumb item={breadcrumb} />
             </div>
-            <span className="font-semibold text-2xl">Add Product</span>
+            <div className='flex flex-row items-center justify-between'>
+                <span className="font-semibold text-2xl">Add Product</span>
+                <button className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500" onClick={handleSubmit}>Add Product</button>
+            </div>
             <div className="flex flex-row">
                 <div className="w-[67%] mr-6 flex flex-col">
                     <div className="bg-white my-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <h1 className="text-lg font-semibold">Basic Infomation</h1>
                         <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Name</label>
-                        <input type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.name}/>
+                        <input onChange={(e) =>{
+                            setName(e.target.value)
+                            setSlug(createSlug(e.target.value))    
+                        }}  
+                        value={name} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full"/>
                         <label className="font-semibold text-sm text-gray-600 pb-2 pt-3 block">Slug</label>
                         <div className="border mb-1 rounded-sm border-[#ced4da] flex flex-row items-center">
                             <div className="px-3 bg-[#e9ecef] py-2 border-r border-[#ced4da]">https://example.com/products/</div>
-                            <input type="text" className="py-2 outline-none px-3 text-sm w-full" value={product.slug}/>
+                            <input onChange={e => setSlug(e.target.value)} type="text" className="py-2 outline-none px-3 text-sm w-full" value={slug}/>
                         </div>
                         <span className="text-[14px]">Unique human-readable product identifier. No longer than 255 characters.</span>
-                        <label className="font-semibold text-sm text-gray-600 pb-2 pt-3 block">Description</label>
-                        <TextEditor onChange={setDescription} content={description}/>
-                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Short Description</label>
-                        <textarea className="min-h-[100px] border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.slug}/>
+                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Description</label>
+                        <textarea value={description} className="min-h-[100px] h-fit border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" onChange={e => setDescription(e.target.value)}/>
                         <h1 className="text-lg font-semibold">Attribute</h1>
                         {
                             attributes.length > 0 && attributes.map((attribute, key) => (
@@ -143,38 +217,93 @@ function AddProduct() {
                             selectImage.length > 0 ? 
                             <div className="flex flex-row justify-between p-2 mb-1 items-center bg-blue-200">
                                 <span>{`${selectImage.length} selected`}</span>
-                                <FaTrash className="text-[#3464eb]"/>
+                                <FaTrash className="text-[#3464eb]" onClick={handleDeleteImage}/>
                             </div> :
                             <h1 className="text-lg mb-4 font-semibold">Product Images</h1>
                         }
                         <div className="grid grid-cols-3 gap-4 border p-2">
                             {
-                                Array.from(listImage).length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
-                                Array.from(listImage).map((i, key) => (
-                                    <ProductImage src={URL.createObjectURL(i)} onCheck={handleCheck} key={key}/>
+                                uploadImages.length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
+                                uploadImages.map((i, key) => (
+                                    <div key={key}>
+                                        <div className="group border relative"><img className="max-h-[130px] w-full" src={i.url} alt="pic"/>
+                                            <Checkbox className={`hover:bg-white p-0 m-0 ${!checkChecked(i.url) && "hidden"} rounded-none group-hover:flex absolute top-0 right-0 bg-white`} checked={checkChecked(i.url)} onChange={() => handleCheck(i)}/>
+                                        </div>
+                                    </div>
                                 ))
                             }
                         </div>
                         <label className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500" htmlFor="file_input">Upload file</label>
-                        <input multiple  onChange={handleImageUpload} className="block hidden w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" accept="image/*" />
+                        <input multiple onChange={handleImageUpload} className="block hidden w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" accept="image/*" />
                         
                     </div>
-                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                    <div className="bg-white mb-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <h1 className="text-lg font-semibold">Pricing</h1>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Regular Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.price}/>
+                                <input value={regularPrice} type="string" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" onChange={e => setRegularPrice(e.target.value)}/>
                             </div>
                             <div>
                                 <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Discount Price</label>
-                                <input type="number" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" value={product.price}/>
+                                <input value={discountPrice} type="string" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" onChange={e => setDiscountPrice(e.target.value)}/>
                             </div>
                         </div>
                     </div>
+                    <div className="bg-white mb-6 p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <MultipleSelectChip names={['tag 1', 'tag 2']} onChange={handleChangeTag}/>
+                    </div>
+                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <GroupCheckboxes 
+                            input={{
+                                title: "Categories",
+                                listItem: category,
+                            }}
+                            checkedItems={categories}
+                            onChange={handleChangeCategories} 
+                            />
+                        {
+                            addCategory && (
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Category</label>
+                                        <input onChange={e => setCurrenCate(e.target.value)} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
+                                    </div>
+                                    
+                                </div>
+                            )
+                        }
+                        {
+                            addCategory ? <button onClick={()=>{
+                                currentCate !== '' && setCategory([...category, currentCate])
+                                setAddCategory(false)
+                            }} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Save</button> :
+                            <button onClick={()=> setAddCategory(true)} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Add new</button>
+                        }
+
+                    </div>
                 </div>
             </div>
-
+            {showModel && (
+                <Model
+                    top='40%'
+                    bottom='40%'
+                    left='40%'
+                    right='40%'
+                    onClose={() => setShowModel(false)}
+                    render={
+                        <div>
+                            <div className="flex flex-col w-[95%] mx-auto my-6 justify-center items-center">
+                                
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAuR_JFau6CIfKcvOtNqUtxSUoAPRsL483mbvJjEvtKA&s" alt="pic"
+                                    className='w-[60px]'
+                                />
+                                <span className='pt-3'>Thêm thành công</span>
+                            </div>
+                        </div>
+                    }
+                />
+            )}
         </div>
     )
 }

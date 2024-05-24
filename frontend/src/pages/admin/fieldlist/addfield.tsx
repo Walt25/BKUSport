@@ -1,19 +1,19 @@
 import { BreadcrumbType, Breadcrumb } from '@/components/Breadcrumb'
 import { AdminLayout } from '@/components/Layout/AdminLayout'
 import { ProductType } from '@/components/Product'
-import { ProductImage } from '@/components/ProductImage'
 import { TextEditor } from '@/components/TextEditor'
 import React, { ReactElement, useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 import { ImCancelCircle } from 'react-icons/im'
 import { AttributeType } from './[...slug]'
+import { Checkbox } from '@mui/material'
 
 function Addfield() {
   const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [description, setDescription] = useState("")
 
-    const [listImage, setListImage] = useState<FileList>({} as FileList)
-    const [selectImage, setSelectImage] = useState<File[]>([])
+    const [uploadImages, setUploadImages] = useState<string[]>([])
+    const [selectImage, setSelectImage] = useState<string[]>([])
     const [attributes, setAttributes] = useState<AttributeType[]>([])
     const [addAttribute, setAddAttribute] = useState(false)
     const [currenAttr, setCurrenAttr] = useState<AttributeType>({} as AttributeType)
@@ -58,19 +58,40 @@ function Addfield() {
     const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
         const file = event.target.files
-        console.log(file)
-        setListImage(file)
+        let upload: string[] = []
+        for (let i = 0; i < file.length; i++) {
+            upload.push(URL.createObjectURL(file[i]))
+        }
+        setUploadImages(uploadImages.concat(upload))
 
     };
 
     const handleCheck = (src: string) => {
-        // console.log(selectImage.includes(src), src, selectImage)
-        // if (!selectImage.includes(src)) {
-        //     setSelectImage([...selectImage, src])
-        // }
-        // else setSelectImage(selectImage.filter(i => i !== src))
-
+        if (!selectImage.includes(src)) {
+            setSelectImage([...selectImage, src])
+        }
+        else {
+            setSelectImage(selectImage.filter(i => i !== src))
+        }
     }
+
+    const handleDeleteImage = () => {
+        const upload = new Set(uploadImages)
+        const select = new Set(selectImage)
+        selectImage.map(i => {
+            if(upload.has(i)) {
+                upload.delete(i)
+                select.delete(i)
+            }
+        })
+        setSelectImage(Array.from(select))
+        setUploadImages(Array.from(upload))
+    }
+
+    const checkChecked = (src: string) => {
+        return selectImage.includes(src)
+    }
+
     const timeTable = [
         {
             time:'5:00 - 6:30',
@@ -188,15 +209,19 @@ function Addfield() {
                             selectImage.length > 0 ? 
                             <div className="flex flex-row justify-between p-2 mb-1 items-center bg-blue-200">
                                 <span>{`${selectImage.length} selected`}</span>
-                                <FaTrash className="text-[#3464eb]"/>
+                                <FaTrash className="text-[#3464eb]" onClick={handleDeleteImage}/>
                             </div> :
                             <h1 className="text-lg mb-4 font-semibold">Product Images</h1>
                         }
                         <div className="grid grid-cols-3 gap-4 border p-2">
-                            {
-                                Array.from(listImage).length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
-                                Array.from(listImage).map((i, key) => (
-                                    <ProductImage src={URL.createObjectURL(i)} onCheck={handleCheck} key={key}/>
+                        {
+                                uploadImages.length < 1 ? <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRtO_JDfcU-A_Hi5IayDm2yf-q2gmSQZh3ghQ6-9BVNQ&s"} alt="pic" /> :
+                                uploadImages.map((i, key) => (
+                                    <div key={key}>
+                                        <div className="group border relative"><img className="max-h-[130px] w-full" src={i} alt="pic"/>
+                                            <Checkbox className={`hover:bg-white p-0 m-0 ${!checkChecked(i) && "hidden"} rounded-none group-hover:flex absolute top-0 right-0 bg-white`} checked={checkChecked(i)} onChange={() => handleCheck(i)}/>
+                                        </div>
+                                    </div>
                                 ))
                             }
                         </div>
