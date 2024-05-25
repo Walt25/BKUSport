@@ -26,7 +26,7 @@ export const Food: React.FC<FoodProps> = (props) => {
                 <div className="overflow-hidden"><img src={item.images[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
-                <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
+                <span className="text-md text-center font-semibold overflow-hidden truncate w-[80%]">
                     <Link href={`/products/${item._id}/${item._id}`}>{item.name} </Link>
                 </span>
 
@@ -38,6 +38,9 @@ export const Food: React.FC<FoodProps> = (props) => {
                     <Divider className="w-full" />
                 </div>
                 <div className="flex flex-row justify-center pt-3">
+                    <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center cursor-pointer">
+                        <FaShoppingCart size={14} color="#78a206" />
+                    </div>
                     <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center cursor-pointer" onClick={() => setShowModel(true)}>
                         <AiOutlineForm size={14} color="#78a206" />
                     </div>

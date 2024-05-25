@@ -57,7 +57,7 @@ function Home(props: {products: any[]}) {
         }
 
         const getFoods = async () => {
-            const res = await axios.get("http://localhost:4000/foods")
+            const res = await axios.get("http://localhost:4000/uniforms")
             if (res.data.result.length > 0) {
                 res.data.result.forEach((item: Foodstype) => {
                     const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -101,15 +101,13 @@ function Home(props: {products: any[]}) {
                     <BoxBanner src={item} sx={"flex-1 mx-3 my-6 h-[220px]"} key={key} />
                 ))}
             </div>
-            <div className=" w-[94%] mx-auto py-12 flex flex-col items-center">
-                <h1 className="font-semibold text-lg">Sản phẩm nổi bật</h1>
-                <div className="w-full px-3 pt-6">
-                    <Divider className="w-full" />
+            <div className="relative rounded-xl w-[94%] mx-auto mt-12 py-12 flex flex-col items-center bg-gradient-to-r from-pink-500 to-red-500">
+                <div className="absolute -top-[10px] flex justify-center items-center w-[36%] h-[70px] bg-no-repeat mx-auto font-semibold text-2xl text-white bg-[url('https://bizweb.dktcdn.net/100/485/982/themes/918620/assets/bg_title_deal.png?1716457586179')] ">Sản phẩm nổi bật</div>
+                <div className="w-full pt-12 px-3">
+                    <ProductsCarousel items={products} slidePerView={sm ? 3 : md ? 5 : 6} />
                 </div>
             </div>
-            <div className="w-[94%] mx-auto px-3 mb-12">
-                <ProductsCarousel items={products} slidePerView={sm ? 3 : md ? 5 : 6} />
-            </div>
+            
             <div className="w-[94%] mx-auto px-3 border border-[#ebebeb] flex flex-row justify-between max-sm:flex-col">
                 {policy.map((item, key) => (
                     <div className="flex flex-row flex-1 justify-center items-center py-10" key={key}>
@@ -153,14 +151,14 @@ function Home(props: {products: any[]}) {
                     <FieldsCarousel items={fields} slidePerView={sm ? 3 : md ? 3 : 4} />
             </div>
             <div className=" w-[94%] mx-auto py-6 flex flex-col items-start px-3">
-                <h1 className="font-semibold text-2xl">Đồ uống</h1>
+                <h1 className="font-semibold text-2xl">Đồng phục</h1>
                 <div className="w-full pt-6">
                     <Divider className="w-full" />
                 </div>
             </div>
             <div className="w-[94%] mx-auto px-3">
                 <div>
-                    <FoodsCarousel items={foods} slidePerView={sm ? 3 : md ? 5 : 6} />
+                    <FoodsCarousel items={foods} slidePerView={sm ? 3 : md ? 4 : 5} />
                 </div>
             </div>
             <div className="w-full pt-6">

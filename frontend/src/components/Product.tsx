@@ -23,12 +23,12 @@ export const Product: React.FC<ProductProps> = (props) => {
     const [quantity, setQuantity] = useState(1);
 
     return (
-        <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
+        <div key={item._id} className="bg-white group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
             <Link href={`/products/${item._id}/${item.slug}`}>
                 <div className="overflow-hidden"><img src={item.images.data[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
-                <span className="text-xs font-semibold overflow-hidden truncate w-[80%]">
+                <span className="text-sm font-semibold overflow-hidden truncate w-[80%]">
                     <Link href={`/products/${item._id}/${item.slug}`}>{item.name} </Link>
                 </span>
 
@@ -42,7 +42,6 @@ export const Product: React.FC<ProductProps> = (props) => {
                 </div>
                 <div className="flex flex-row justify-center pt-3">
                     <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center cursor-pointer">
-                        {" "}
                         <FaShoppingCart size={14} color="#78a206" />
                     </div>
                     <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center cursor-pointer" onClick={() => setShowModel(true)}>

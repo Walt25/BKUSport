@@ -32,19 +32,11 @@ const NAVIGATION = [
         link: "/products",
         children: [
           {
-            title: "Thực phẩm chức năng",
+            title: "Đồng phục",
             link: "/shop",
           },
           {
-            title: "Thực phẩm chức năng abcdef",
-            link: "/shop",
-          },
-          {
-            title: "Thực phẩm chức năng",
-            link: "/shop",
-          },
-          {
-            title: "Thực phẩm chức năng",
+            title: "Dụng cụ thể thao",
             link: "/shop",
           },
         ],

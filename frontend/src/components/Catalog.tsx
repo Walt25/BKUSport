@@ -36,11 +36,6 @@ const category:CategoryType[] = [
         slug: "dung-cu-the-thao",
     },
     {
-        productCategoryId: "3",
-        name: "Đặt đồ ăn",
-        slug: "dat-do-an",
-    },
-    {
         productCategoryId: "4",
         name: "Thuê dịch vụ",
         slug: "thue-dich-vu",
