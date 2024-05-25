@@ -3,11 +3,13 @@ import databaseService from './database.services'
 import { ObjectId } from 'mongodb'
 import { signToken } from '~/utils/jwt'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
-import { RegisterReqBody } from '~/models/requests/User.requests'
-import { sendOTPVerificationEmail, sendVerifyRegisterEmail } from '~/utils/email'
+import { ForgotPasswordReqBody, RegisterReqBody } from '~/models/requests/User.requests'
+import { sendOTPForgotPassword, sendOTPVerificationEmail, sendVerifyRegisterEmail } from '~/utils/email'
 import { hashPassword } from '~/utils/crypto'
 import User from '~/models/schemas/User.schema'
 import { error } from 'console'
+import { check } from 'express-validator'
+import { ErrorWithStatus } from '~/models/Errors'
 
 class UsersService {
   private signAccessToken({ user_id, role }: { user_id: string; role: string }) {
@@ -35,13 +37,13 @@ class UsersService {
   }
 
   async login({ user_id, role }: { user_id: string; role: string }) {
-    const access_token  = await signToken({
+    const access_token = await signToken({
       payload: { userId: user_id, role: 'user', token_type: TokenType.AccessToken },
       options: { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN }
     })
-  
+
     const refresh_token = await signToken({
-      payload: {  userId: user_id, role: 'user', token_type: TokenType.RefeshToken },
+      payload: { userId: user_id, role: 'user', token_type: TokenType.RefeshToken },
       options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
     })
     await databaseService.refreshTokens.insertOne(
@@ -50,7 +52,7 @@ class UsersService {
     return {
       access_token,
       refresh_token,
-      user_id, 
+      user_id,
       role
     }
   }
@@ -63,11 +65,11 @@ class UsersService {
     const emailExist = await this.checkEmailExist(payload.email)
 
     if (emailExist) {
-      return {error: "This email are in used"}
+      return { error: 'This email are in used' }
     }
 
     if (payload.confirm_password !== payload.password) {
-      return {error: "Confirm password must be the same as password"}
+      return { error: 'Confirm password must be the same as password' }
     }
 
     const result = await databaseService.users.insertOne(
@@ -78,12 +80,27 @@ class UsersService {
         password: hashPassword(payload.password)
       })
     )
-    
+
     const user_id = result.insertedId.toString()
     const respone = await sendOTPVerificationEmail(payload.email, user_id)
 
     return {
-      user_id, 
+      user_id,
+      role: 'user',
+      respone
+    }
+  }
+
+  async forgotPassword(payload: ForgotPasswordReqBody) {
+    const user = await databaseService.users.findOne({ email: payload.email })
+    if (!user) {
+      throw new ErrorWithStatus({ message: 'Email not exist', status: 550 })
+    }
+
+    const user_id = user._id.toString()
+    const respone = await sendOTPForgotPassword(payload.email, user_id)
+    return {
+      user_id,
       role: 'user',
       respone
     }

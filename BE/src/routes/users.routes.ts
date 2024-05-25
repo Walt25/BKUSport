@@ -1,5 +1,12 @@
 import { Router } from 'express'
-import { getCurrentUserProfile, loginController, registerController, rentNewFieldController, verifyOTP } from '~/controllers/users.controller'
+import {
+  forgotPasswordController,
+  getCurrentUserProfile,
+  loginController,
+  registerController,
+  rentNewFieldController,
+  verifyOTP
+} from '~/controllers/users.controller'
 import { authenticate, loginValidator, registerValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHanlder } from '~/utils/handler'
 
@@ -35,5 +42,7 @@ usersRouter.post('/field/:rental_id', wrapRequestHanlder(rentNewFieldController)
 usersRouter.route('/profile').get(authenticate, wrapRequestHanlder(getCurrentUserProfile))
 
 usersRouter.post('/verifyOTP', wrapRequestHanlder(verifyOTP))
+
+usersRouter.post('/forgot-password', wrapRequestHanlder(forgotPasswordController))
 
 export default usersRouter
