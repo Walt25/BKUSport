@@ -113,7 +113,7 @@ export const authenticate = async (req: any, res: any, next: any) => {
   if (token) {
 
     const decoded = verifyToken(token)
-    console.log(decoded)
+    console.log("hello", decoded)
       try {    
           req.user = await databaseService.users.findOne({_id: new ObjectId(decoded.userId)})
           next()

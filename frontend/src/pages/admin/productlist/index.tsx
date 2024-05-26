@@ -22,42 +22,7 @@ function ProductList() {
         },
     ]
 
-    // const menuList: ReactElement[] = [
-    //     <div className="font-semibold">Filter</div>,
-    //     <RangeSlider />,
-    //     <GroupCheckboxes input={{
-    //         title: "Categories",
-    //         listItem: [
-    //             'Power tools',
-    //             'Hand tools',
-    //             'Machine tools',
-    //             'Power machinery',
-    //             'Measurement'
-    //         ]
-    //     }} onChange={function (categories: string): void {
-    //         throw new Error("Function not implemented.");
-    //     } } />,
-    //     <GroupCheckboxes input={{
-    //         title: "Product type",
-    //         listItem: [
-    //             'Simple',
-    //             'Variable',
-    //             'Digital',
-    //         ]
-    //     }} />,
-    //     <GroupCheckboxes input={{
-    //         title: "Brands",
-    //         listItem: [
-    //             'Brandix',
-    //             'FastWheels',
-    //             'FuelCorp',
-    //             'RedGate',
-    //             'Specter',
-    //             'TurboElectric'
 
-    //         ]
-    //     }} />
-    // ]
 
     return (
         <div className="p-7">

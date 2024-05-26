@@ -12,7 +12,7 @@ export type UserType = {
     username: string,
     email: string, 
     _id: string,
-    isAdmin: boolean
+    isAdmin: string
 }
 
 export const currentUserContext = createContext<UserHookReturn>({} as UserHookReturn);

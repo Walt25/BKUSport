@@ -5,7 +5,8 @@ import {
   loginController,
   registerController,
   rentNewFieldController,
-  verifyOTP
+  verifyOTP,
+  verifyOTPFogotPass
 } from '~/controllers/users.controller'
 import { authenticate, loginValidator, registerValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHanlder } from '~/utils/handler'
@@ -42,6 +43,8 @@ usersRouter.post('/field/:rental_id', wrapRequestHanlder(rentNewFieldController)
 usersRouter.route('/profile').get(authenticate, wrapRequestHanlder(getCurrentUserProfile))
 
 usersRouter.post('/verifyOTP', wrapRequestHanlder(verifyOTP))
+
+usersRouter.post('/verifyOTPFogotPass', wrapRequestHanlder(verifyOTPFogotPass))
 
 usersRouter.post('/forgot-password', wrapRequestHanlder(forgotPasswordController))
 

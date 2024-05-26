@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { getProducts } from "../api/product";
 import axios from "axios";
 import { getAllFields } from "../api/field";
@@ -11,7 +11,48 @@ import { BiSearch } from "react-icons/bi";
 import { bannerTop } from "@/data";
 import { BoxBanner } from "@/components/BoxBanner";
 import { FieldsCarousel } from "@/components/FieldsCarousel";
+import { RangeSlider } from "@/components/Slider";
+import { GroupCheckboxes } from "@/components/CheckboxList";
+import { UniformType } from "@/Api/uniform";
+import { DenseMenu } from "@/components/Menu";
 
+const menuList: ReactElement[] = [
+  <div className="font-semibold">Filter</div>,
+  <RangeSlider />,
+  <GroupCheckboxes input={{
+      title: "Categories",
+      listItem: [
+          'Soccer',
+          'Volleyball',
+          'Badminton',
+          'Swimming',
+          'Tennis',
+          'Table Tenis'
+      ]
+  }} onChange={function (categories: string): void {
+      throw new Error("Function not implemented.");
+  } } />,
+  <GroupCheckboxes input={{
+      title: "Product type",
+      listItem: [
+          'Simple',
+          'Variable',
+          'Digital',
+      ]
+  }} />,
+  <GroupCheckboxes input={{
+      title: "Brands",
+      listItem: [
+          'Brandix',
+          'FastWheels',
+          'FuelCorp',
+          'RedGate',
+          'Specter',
+          'TurboElectric'
+
+      ]
+  }} />
+]
 
 const ProductPage = () => {
 
@@ -20,6 +61,19 @@ const ProductPage = () => {
     const ref = useRef(null);
     const sm = useMediaQuery("(max-width: 640px)");
     const md = useMediaQuery("(max-width: 768px)");
+
+    const [products, setProducts] = useState<FieldsType[]>([])
+    useEffect(() => {
+      const getEquipments = async () => {
+        const res = await getAllFields()
+        if (res.length > 0) {
+            setProducts(res)
+        }
+        else setProducts([])
+    }
+
+    getEquipments()
+    }, [])
 
     useEffect(() => {
       const getFields = async () => {
@@ -31,15 +85,12 @@ const ProductPage = () => {
 
     return (
       <div className="w-[94%] mx-auto">
-        <div className="mt-12 mb-6 mx-4 flex flex-row items-center">
+        <div className="flex items-center justify-center h-[190px] bg-[url('https://t4.ftcdn.net/jpg/05/58/74/03/360_F_558740316_doEcfqBvECaPfUd7iBsfoRZD3cWNBd1L.jpg')]">
+          <span className="text-white font-mono text-5xl font-semibold tracking-widest">SPORT UNIFORMS</span>
+        </div>
+        <div className="mb-6 mx-4 flex flex-row items-center">
           <div>
-            <button id="dropdownDividerButton" ref={ref} onClick={() => setShowDropDown(!showDropdown)} className="flex flex-row items-center relative text-white bg-blue-700 hover:bg-blue-800 outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-              <TbSoccerField size={24} className="mr-2"/>
-              Danh mục sân
-              <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-              </svg>
-            </button>
+
             <CustomMenu
                 anchorEl={ref.current}
                 open={showDropdown}
@@ -67,23 +118,32 @@ const ProductPage = () => {
             </CustomMenu>
           </div>
         </div>
+        
         <div className="flex flex-row n max-sm:flex-col">
             {bannerTop.map((item, key) => (
                 <BoxBanner src={item} sx={"flex-1 mx-3 my-6 h-[220px]"} key={key} />
             ))}
         </div>
-        <div className="px-3 bg-[--primary-color] p-12 my-6">
-          <FieldsCarousel items={fields} slidePerView={sm ? 3 : md ? 3 : 4} />
+        <div className="relative rounded-xl mt-12 py-12 flex flex-col items-center bg-gradient-to-r from-blue-200 to-blue-500">
+            <div className="rounded-full absolute -top-[20px] flex justify-center items-center w-[36%] h-[70px] bg-no-repeat mx-auto font-semibold text-2xl text-white bg-blue-500">Sản phẩm nổi bật</div>
+            <div className="w-full pt-12 px-3">
+              <FieldsCarousel items={fields} slidePerView={sm ? 3 : md ? 3 : 4} />
+            </div>
         </div>
-        <div className="py-12">
-          <h1 className="text-2xl font-semibold">Danh sách sân</h1>
+        <div className="flex flex-col">
+        
+        <div className="grid grid-cols-4 gap-4 my-12">
+          <div>
+            <DenseMenu item={menuList} />  
+          </div> 
+          <div className="col-span-3 grid grid-cols-3 gap-4 ">
+            {
+              products ? products.map((product, key) => (
+                <Field item={product} key={key} />
+              )) : <span>Sorry! no product found</span>
+            }
+          </div>
         </div>
-        <div className="grid grid-cols-4 gap-4">
-          {
-            fields.map((i, key) => (
-              <Field item={i} key={key}/>
-            ))
-          }
         </div>
       </div>
     )

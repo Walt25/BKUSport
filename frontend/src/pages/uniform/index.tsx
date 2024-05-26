@@ -4,6 +4,8 @@ import { Product, ProductType } from "@/components/Product";
 import { DenseMenu } from "@/components/Menu";
 import { RangeSlider } from "@/components/Slider";
 import { GroupCheckboxes } from "@/components/CheckboxList";
+import { UniformType, getAllUniform } from "@/Api/uniform";
+import { Food } from "@/components/Food";
 
 
     const menuList: ReactElement[] = [
@@ -44,18 +46,14 @@ import { GroupCheckboxes } from "@/components/CheckboxList";
         }} />
     ]
 
-const ProductPage = () => {
+const UniformPage = () => {
 
 
-    const [products, setProducts] = useState<ProductType[]>([])
+    const [products, setProducts] = useState<UniformType[]>([])
     useEffect(() => {
       const getEquipments = async () => {
-        const res = await getAllEquipment()
+        const res = await getAllUniform()
         if (res.data.result.length > 0) {
-            res.data.result.forEach((item: ProductType) => {
-                const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                item.slug = slug;
-              });
             setProducts(res.data.result)
         }
         else setProducts([])
@@ -69,7 +67,7 @@ const ProductPage = () => {
     return (
       <div className="w-[94%] mx-auto flex flex-col">
         <div className="flex items-center justify-center h-[190px] bg-[url('https://t4.ftcdn.net/jpg/05/58/74/03/360_F_558740316_doEcfqBvECaPfUd7iBsfoRZD3cWNBd1L.jpg')]">
-          <span className="text-white font-mono text-5xl font-semibold tracking-widest">SPORT EQUIPMENTS</span>
+          <span className="text-white font-mono text-5xl font-semibold tracking-widest">SPORT UNIFORMS</span>
         </div>
         <div className="grid grid-cols-4 gap-4 my-12">
           <div>
@@ -78,7 +76,7 @@ const ProductPage = () => {
           <div className="col-span-3 grid grid-cols-4 gap-4 ">
             {
               products ? products.map((product, key) => (
-                <Product item={product} key={key} />
+                <Food item={product} key={key} />
               )) : <span>Sorry! no product found</span>
             }
           </div>
@@ -87,4 +85,4 @@ const ProductPage = () => {
     )
 }
 
-export default ProductPage
+export default UniformPage

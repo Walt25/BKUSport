@@ -1,6 +1,8 @@
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { AdminLayout } from '@/components/Layout/AdminLayout'
-import React, { ReactElement } from 'react'
+import { useCurrentUser } from '@/contexts/userContext'
+import { useRouter } from 'next/router'
+import React, { ReactElement, useEffect, useState } from 'react'
 
 function Admin() {
   const breadcrumb = [
@@ -14,6 +16,16 @@ function Admin() {
     },
   ]
 
+  const route = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (currentUser.isAdmin !== 'admin') {
+      route.push('/')
+    }
+  }, [])
+
+  const {currentUser } = useCurrentUser()
   return (
     <div className="p-7 h-[100vh]">
             <div className="py-4">

@@ -128,11 +128,6 @@ export const Header = () => {
     ));
   };
 
-  const getJwtFromCookie = () => {    
-    return null; 
-  }
-
-
   
   return (
     <div
@@ -232,7 +227,7 @@ export const Header = () => {
           </div>
         </MenuItem>
         <MenuItem className="hover:text-[--primary-color] text-sm">
-          <Link href={"profile"}>Thông tin tài khoản</Link>{" "}
+          <Link href={"/profile"}>Thông tin tài khoản</Link>{" "}
         </MenuItem>
         <MenuItem className="hover:text-[--primary-color] text-sm" onClick={() => {
           setCurrentUser({} as UserType)

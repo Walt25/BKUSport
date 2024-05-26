@@ -10,6 +10,7 @@ import { TbSmartHome } from "react-icons/tb"
 import { Loading } from "./Loading"
 import { Product, ProductType } from "./Product"
 import { Box, Divider } from "@mui/material"
+import { useRouter } from "next/router"
 
 type CatalogProps = {
     canExpand: boolean
@@ -28,12 +29,12 @@ const category:CategoryType[] = [
     {
         productCategoryId: "1",
         name: "Đồng phục",
-        slug: "dong-phuc",
+        slug: "uniform",
     },
     {
         productCategoryId: "2",
         name: "Dụng cụ thể thao",
-        slug: "dung-cu-the-thao",
+        slug: "products",
     },
     {
         productCategoryId: "4",
@@ -43,7 +44,7 @@ const category:CategoryType[] = [
     {
         productCategoryId: "5",
         name: "Sân thể thao",
-        slug: "san-the-thao",
+        slug: "fields",
     },
     
 ]
@@ -51,6 +52,7 @@ const category:CategoryType[] = [
 export const Catalog:React.FC<CatalogProps> = ({canExpand = false}) => {
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState<CategoryType[]>(category);
+    const route = useRouter()
 
     if (loading) return <Loading />
 
@@ -61,7 +63,9 @@ export const Catalog:React.FC<CatalogProps> = ({canExpand = false}) => {
             <Divider />
              {
                 categories.map((item, key) => (
-                    <div className="cursor-pointer group flex py-3 flex-row justify-between flex-1 px-3 items-center hover:bg-[#f2f3f7]" key={key}>
+                    <div onClick={() => {
+                        route.push(`/${item.slug}`)
+                    }} className="cursor-pointer group flex py-3 flex-row justify-between flex-1 px-3 items-center hover:bg-[#f2f3f7]" key={key}>
                         <div className="flex flex-row items-center group-hover:text-[--primary-color] x`">
                             {item.image?.mediaItemUrl && <img src={item.image.mediaItemUrl} alt="pic" className="w-8 h-8 mr-2" />}
                             <span className="pl-2 text-sm">{item.name}</span>

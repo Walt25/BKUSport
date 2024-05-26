@@ -1,56 +1,50 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import {  policy } from "@/data";
-import { Loading } from "@/components/Loading";
+import {policy } from "@/data";
 import { Breadcrumb, BreadcrumbType } from "@/components/Breadcrumb";
-import { ProductType } from "@/components/Product";
 import { Divider } from "@mui/material";
 
-import { ProductsCarousel } from "@/components/ProductsCarousel";
 import { Catalog } from "@/components/Catalog";
-import { FiSmartphone } from "react-icons/fi";
-import { BsBoxSeam } from "react-icons/bs";
-import { GoShieldCheck } from "react-icons/go";
-import { FaRegMoneyBillAlt } from "react-icons/fa";
 import {BasicRating} from "@/components/StarRate";
-import { NavProduct } from "@/components/NavProduct";
 import { blogs } from "@/pages/blog";
 import Link from "next/link";
 
 import Avatar from '@mui/material/Avatar';
-import { deepOrange, deepPurple } from '@mui/material/colors';
-import { getProduct, getProducts } from "../../api/product";
+import { deepOrange } from '@mui/material/colors';
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { formatCash, formatCurrency } from "@/ultils";
+import { formatCash } from "@/ultils";
+import { UniformType, getUniform } from "@/Api/uniform";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
     return { props: { id } };
 }) satisfies GetServerSideProps<{}>;
 
-export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) {   
+export default function UniformDetail({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) {   
     const [currentThumbnail, setCurrentThubnail] = useState(0);
     const [quantity, setQuantity] = useState(1);
-    const [product, setProduct] = useState<ProductType>({} as ProductType)
+    const [product, setProduct] = useState<UniformType>({} as UniformType)
     const [loading, setLoading] = useState(true)
 
+    const [size, setSize] = useState<string>('')
+
+    
     useEffect(() => {
         const getProductById = async () => {
             if (id) {
-                const res = await getProduct(id)
+                const res = await getUniform(id)
                 if (res.data.result) {
                     console.log(res)
                     setProduct(res.data.result)
                 }
-                else setProduct({} as ProductType)
+                else setProduct({} as UniformType)
             }
-            else setProduct({} as ProductType)
+            else setProduct({} as UniformType)
             setLoading(false)
         }
-       getProductById() 
+        getProductById() 
     }, [id])
-
+    
     const breadcrumb: BreadcrumbType[] = [
         {
             title: "Shop",
@@ -93,14 +87,14 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                         {
                                 product.images && <>
                                     <div className="flex flex-col justify-start">
-                                        {product.images.data.map((item, key) => (
+                                        {product.images.map((item, key) => (
                                             <div className="w-10 h-10 m-2 cursor-pointer" key={key} onClick={() => setCurrentThubnail(key)}>
                                                 <img src={item} alt="pic" className="border" />
                                             </div>
                                         ))}
                                     </div>
                                     <div className="flex-1">
-                                        <img src={product.images.data[currentThumbnail]} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
+                                        <img src={product.images[currentThumbnail]} alt="pic" className="border ml-4 mr-2 my-2 w-full" />
                                     </div>
                                 </>
                         }
@@ -109,8 +103,8 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                             <h1 className="font-semibold text-lg">{product.name}</h1>
                             <span className="text-[#AFAFAF] text-sm py-3">{product._id}</span>
                             <Divider />
-                            <span className="text-[#94c341] font-semibold text-xl pt-3">{formatCash(Number(product.discountPrice) * quantity) + ' ' + '$'}</span>
-                            {product.regularPrice && <span className=" text-[#AFAFAF] font-light text-sm line-through">{product.regularPrice + " " + "$"}</span>}
+                            <span className="text-[#0490db] font-semibold text-xl pt-3">{formatCash(Number(product.price) * quantity) + ' ' + '$'}</span>
+                            {product.price && <span className=" text-[#AFAFAF] font-light text-sm line-through">{product.price + " " + "$"}</span>}
                             <div className="pt-3">
                                 <Divider />
                             </div>
@@ -131,37 +125,20 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                                 </button>
                             </div>
                             <Divider />
-                            <h1></h1>
-                            <div className="flex flex-col pt-5 pb-3">
+                            <div className="flex flex-row pt-5 pb-3">
                                 {
-                                    
-                                        <div className="flex flex-row pb-2 justify-between">
-                                            <table className="w-full">
-                                                <tbody>
-                                                    {
-                                                        product.attribute && product.attribute.map((item, key) => (
-                                                            <tr key={key}> 
-                                                                {
-                                                                    <>
-                                                                        <td className="font-semibold text-sm w-[50%] p-2">{item.title}:</td>
-                                                                        {
-                                                                            <td className="text-sm">{item.content}</td>
-                                                                        }
-                                                                    </>
-                                                                }
-                                                                
-                                                            </tr>
-                                                        ))
-                                                    }
-                                                    
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    product.type && product.type.map((item, key) => (
+                                        <button key={key} onClick={() => setSize(item.size)} className={`${size === item.size ? 'bg-[#0490db] text-white' : 'border-[#0490db] text-[#0490db]' } rounded-md border  w-10 h-10 flex items-center justify-center mr-2`}> 
+                                            <span className="font-semibold">
+                                                {
+                                                    item.size
+                                                }
+                                            </span>
+                                        </button>
+                                    ))
                                 }
                             </div>
-                           
-
-                            <button className="w-fit bg-[#0490db] text-white px-16 py-3 mb-4">Add to cart</button>
+                            <button className="w-fit bg-[#0490db] text-white px-16 mt-6 py-3 mb-4">Add to cart</button>
                             
                         </div>
                     </div>

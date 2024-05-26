@@ -5,7 +5,7 @@ import { AdminNavbar } from "../../components/Admin/Navigation"
 import { ReactElement, useState } from "react"
 import { Header } from "../Header"
 import { I18nProvider } from "@/contexts/I18n"
-import { CurrentUserContextProvider } from "@/contexts/userContext"
+import { CurrentUserContextProvider, useCurrentUser } from "@/contexts/userContext"
 
 type AdminLayoutProps = {
     children: ReactElement
@@ -17,6 +17,10 @@ export const AdminLayout:React.FC<AdminLayoutProps> = ({children}) => {
     const handleOpenNavbar = () => {
         setOpenNavbar(!openNavbar)
     }
+
+    const {currentUser} = useCurrentUser()
+
+    console.log(currentUser)
 
     return (
         <CurrentUserContextProvider>

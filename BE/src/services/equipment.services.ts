@@ -15,6 +15,7 @@ class EquipmentService {
         slug: body.slug,
         attribute: body.attribute,
         category: body.category,
+        sport: body.sport
       })
     )
     const equipment = await databaseService.equipments.findOne({ _id: new ObjectId(result.insertedId) })

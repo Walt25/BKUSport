@@ -47,3 +47,19 @@ export const updateProductById = async (req: any, res: any) => {
     result
   })
 }
+
+export const removeEquipmentById = async (req: Request, res: Response) => {
+  const product_id = req.body.id
+  const product = await databaseService.equipments.findOne({ _id: new ObjectId(product_id)})
+  if (product) {
+    const result = await databaseService.equipments.deleteOne({_id: new ObjectId(product_id)})
+    return res.json({
+      status: "SUCCESS",
+      message: "Delete product successfull"
+    })
+  }
+  return res.json({
+    status: "FALSE",
+    message: "Something wrong"
+  })
+}

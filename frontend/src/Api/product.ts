@@ -12,7 +12,8 @@ export type AddProductType = {
     description: string,
     slug: string,
     attribute: AttributeType[],
-    category: string[],
+    category: {title: string, tag: string},
+    sport: {title: string, tag: string}[]
 }
 
 export const upload = async (files: FormData) => {
@@ -37,6 +38,7 @@ export const addProduct = async (data: AddProductType) => {
         slug,
         attribute,
         category,
+        sport
     } = data
     const res = await axios.post('http://localhost:4000/equipments', {
         images, 
@@ -48,6 +50,7 @@ export const addProduct = async (data: AddProductType) => {
         slug,
         attribute,
         category,
+        sport
     })
 
     return res

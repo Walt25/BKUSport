@@ -22,12 +22,12 @@ export const Food: React.FC<FoodProps> = (props) => {
 
     return (
         <div key={item._id} className="group relative flex-1 border-2 hover:border-[#ebebeb] border-white mx-3 rounded transition ease-in-out duration-500">
-            <Link href={`/fields/${item._id}/${item._id}`}>
+            <Link href={`/uniform/${item._id}`}>
                 <div className="overflow-hidden"><img src={item.images[0]} alt={"pic"} className="rounded" /></div>
             </Link>
             <div className="flex flex-col items-center pt-6">
                 <span className="text-md text-center font-semibold overflow-hidden truncate w-[80%]">
-                    <Link href={`/products/${item._id}/${item._id}`}>{item.name} </Link>
+                    <Link href={`/uniform/${item._id}`}>{item.name} </Link>
                 </span>
 
                 <span className="font-semibold text-[#78a206] py-2">{formatCash(item.price) + ' đ'}</span>
@@ -45,7 +45,7 @@ export const Food: React.FC<FoodProps> = (props) => {
                         <AiOutlineForm size={14} color="#78a206" />
                     </div>
                     <div className="bg-[#ebebeb] w-7 h-7 mx-1 rounded-full flex items-center justify-center">
-                        <Link href={`/fields/${item._id}/${item._id}`}>
+                        <Link href={`/uniform/${item._id}`}>
                             <FaRegFileAlt size={14} color="#78a206" />
                         </Link>
                     </div>

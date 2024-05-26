@@ -1,28 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { productData, policy } from "@/data";
-import { Loading } from "@/components/Loading";
+import React, { FormEvent, useEffect, useState } from "react";
+import { policy } from "@/data";
 import { Breadcrumb, BreadcrumbType } from "@/components/Breadcrumb";
-import { ProductType } from "@/components/Product";
 import { Divider } from "@mui/material";
 
-import { ProductsCarousel } from "@/components/ProductsCarousel";
 import { Catalog } from "@/components/Catalog";
-import { FiSmartphone } from "react-icons/fi";
-import { BsBoxSeam } from "react-icons/bs";
-import { GoShieldCheck } from "react-icons/go";
-import { FaParking, FaRegMoneyBillAlt, FaWifi } from "react-icons/fa";
-import {BasicRating} from "@/components/StarRate";
-import { NavProduct } from "@/components/NavProduct";
-import { blogs } from "@/pages/blog";
-import Link from "next/link";
 
-import Avatar from '@mui/material/Avatar';
-import { deepOrange, deepPurple } from '@mui/material/colors';
-import { getProduct, getProducts } from "../../api/product";
+import { FaParking, FaWifi } from "react-icons/fa";
+
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { formatCash, formatCurrency } from "@/ultils";
 import { FieldsType } from "@/pages";
 import axios from "axios";
 import { FieldsCarousel } from "@/components/FieldsCarousel";
@@ -35,6 +21,11 @@ import { MdFastfood } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import { Calendar } from "@/components/Calendar";
+import { CalendarV2 } from "@/components/CalendarV2";
+import { useCurrentUser } from "@/contexts/userContext";
+import { Model } from "@/components/Model";
+import { login } from "@/Api/user";
+import { useRouter } from 'next/router';
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -44,13 +35,17 @@ export const getServerSideProps = (async (context) => {
 
 export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) {   
     const [currentThumbnail, setCurrentThubnail] = useState(0);
-    const [quantity, setQuantity] = useState(1);
     const [field, setField] = useState<FieldsType>({} as FieldsType)
     const [fields, setFields] = useState<FieldsType[]>([])
-
-    const [startDate, setStartDate] = useState(new Date());
-
     const [loading, setLoading] = useState(true)
+    const {currentUser} = useCurrentUser()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [showModel, setShowModel] = useState(false)
+    const [error, setError] = useState(false)
+    const router = useRouter()
+    const [startDate, setStartDate] = useState(new Date)
+
 
     useEffect(() => {
         const getField = async () => {
@@ -136,6 +131,25 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
         }
     ]
 
+    const handleBooking = () => {
+        setShowModel(true)
+    }
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        try {
+            const response = await login(email, password)
+            document.cookie = `access_token=${response.data.result.access_token};path=/`
+            document.cookie = `refresh_token=${response.data.result.refresh_token};path=/` 
+            router.reload();
+        } catch (error) {
+            setError(true)
+        }
+    }
+
+    console.log(!currentUser._id)
+
     if (loading) return <div>Loading</div>
 
     return (
@@ -173,33 +187,6 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                         }
                         </div>
                     </div>
-                    <div className="py-12">
-                        <Calendar />
-                    </div>
-                    <Divider />
-                    <div className="mt-[3%] pb-3 pt-12">
-                         <h1 className="font-semibold text-lg pb-4">Đánh giá</h1>
-                        <div className="py-3"><BasicRating v={3} /></div>
-                        <textarea className="border w-full outline-none px-3 py-2 text-sm min-h-32" />
-                        <button className="bg-[--primary-color] px-5 py-2 mt-2 text-white rounded-md">Gửi</button>
-                    </div>
-                    <div className="py-5">
-                        <Divider />
-                    </div>
-                    {
-                        comments.map((comment, key) => (
-                            <div className="mt-[3%] pb-3 flex flex-row">
-                                <div>
-                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>{comment.username.slice(0,1)}</Avatar>
-                                </div>
-                                <div className="flex flex-col pl-3">
-                                    <h1 className="font-medium">{comment.username}</h1>
-                                    <div className="py-3"><BasicRating v={comment.starRate} fixed={true}/></div>
-                                    <span className="text-sm">{comment.comment}</span>
-                                </div>
-                            </div>
-                        ))
-                    }
                     
                 </div>
                 <div className="w-[40%] ml-12 flex flex-col max-lg:hidden">
@@ -211,7 +198,7 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                             <div className="flex flex-col">
                                 <div  className="flex flex-row justify-between pt-2">
                                     <span>Giờ mở cửa</span>
-                                    <span>6h - 23h</span>
+                                    <span>5h - 21h</span>
                                 </div>
                                 <div  className="flex flex-row justify-between pt-2">
                                     <span>Số sân thi đấu:</span>
@@ -241,7 +228,7 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                         </div>
                     </div>
                     <div className="w-full flex flex-col mt-5 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-                        <div className="w-full flex flex-col p-3">
+                        {/* <div className="w-full flex flex-col p-3">
                             <h1 className="pb-2 text-xl font-medium">Đặt sân theo yêu cầu</h1>
                             <Divider />
                             <form className="pt-5">
@@ -276,27 +263,13 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                                     </svg>
                                 </button>
                             </form>
-                        </div>
+                        </div> */}
                     </div>
-                    <Link href={'/blog/1'} className="w-full flex flex-col pt-5">
-                        <h1 className="font-medium text-[--primary-color] py-4 uppercase ">Bài viết mới nhất</h1>
-                        <div className="flex flex-col pb-2">
-
-                            {
-                                blogs.slice(0, 5).map((blog, key) => (
-                                    <div key={key}>
-                                        <Divider />
-                                        <div className="flex flex-row items-center py-2 ">
-                                            <div className="text-md flex flex-col justify-between">
-                                                <span>{blog.title}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </Link>
                 </div>
+            </div>
+            <div className="py-12 w-[80%] px-3 mx-auto my-12 flex flex-col items-center">
+                <Calendar onBooking={handleBooking}/>
+                {/* <CalendarV2 /> */}
             </div>
             <div className="w-[94%] px-3 mx-auto my-12 flex flex-col items-center">
                 <h1 className="text-xl pb-12 font-medium">Sản phẩm tương tự</h1>
@@ -313,6 +286,86 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                     </div>
                 ))}
             </div>
+            {showModel && (
+                !currentUser._id ? <Model
+                    onClose={() => setShowModel(false)}
+                    render={
+                        <form className="p-4" onSubmit={handleSubmit}>
+                            <div className="text-xl text-center mb-4 font-semibold">Đăng nhập</div>
+                            <label className="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
+                            <input onChange={e =>{ 
+                                setEmail(e.target.value)
+                                setError(false)
+                            }} type="email" className={`${error && 'border-red-500'} outline-none border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full`}/>
+                            <label className="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
+                            <input onChange={e => {
+                                setPassword(e.target.value)
+                                setError(false)
+                            }} type="password" className={`${error && 'border-red-500'} outline-none border rounded-lg px-3 py-2 mt-1 text-sm w-full`}/>
+                            <div className={`text-sm ${!error && 'hidden'} text-red-500 mt-3`}>* Email or password is incorrect.</div>
+                            
+                            
+                            <button type="submit" className="bg-[--primary-color] w-full px-5 py-2 my-4 text-white rounded-md">Đăng nhập</button>
+                            <Divider />
+
+                            <div className="flex justify-between items-center">
+                                <span className="hover:underline hover:text-blue-500 mt-4 cursor-pointer">Quên mật khẩu</span>
+                                <span className="hover:underline hover:text-blue-500 mt-4 cursor-pointer">Đăng ký</span>
+                            </div>
+                        </form>
+                    }
+                    top="25%"
+                    bottom="25%"
+                    left="35%"
+                    right="35%"
+                /> :
+                <Model 
+                    onClose={() => setShowModel(false)}
+                    render={
+                        <div className="p-4">
+                           <h1 className="pb-2 text-xl font-medium">Đặt sân theo yêu cầu</h1>
+                            <Divider />
+                            <form className="pt-5">
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Họ và tên"/>
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Email"/>
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Số điện thoại"/>
+                                
+                                <div className="flex flex-row items-center justify-between">
+                                    <div className="relative max-w-sm">
+                                        <div className="absolute z-10 inset-y-0 bottom-2 left-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                                            </svg>
+                                        </div>
+                                        <DatePicker className="border outline-none pl-4 py-2 mt-1 mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" selected={startDate} onChange={(date) => setStartDate(date ? date : new Date())}/>
+                                    </div>
+                                    <div className="relative pl-3 flex-1">
+                                        <div className="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                    
+                                        </div>
+                                        <input type="time" id="time" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" min="09:00" max="18:00" value="00:00" required />
+                                    </div>
+                                </div>
+                                <textarea className="border w-full outline-none px-3 py-2 text-sm min-h-32" placeholder="Ghi chú" />
+                                <button
+                                    type="submit"
+                                    className="mt-4 transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+                                >
+                                    <span className="inline-block mr-2">Đặt sân</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 inline-block">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </button>
+                            </form>
+                            
+                        </div>
+                    }
+                    top="27%"
+                    bottom="27%"
+                    left="35%"
+                    right="35%"
+            />
+            )}
         </div>
     );
 }

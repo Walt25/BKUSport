@@ -13,7 +13,7 @@ export type CheckboxListType = {
   type GroupCheckboxesProps = {
     input: CheckboxListType
     checkedItems?: string[]
-    onChange: (categories: string) => void
+    onChange?: (categories: string) => void
 }
 
 export const GroupCheckboxes:React.FC<GroupCheckboxesProps> = (props) => {
@@ -29,7 +29,7 @@ export const GroupCheckboxes:React.FC<GroupCheckboxesProps> = (props) => {
             {
                 input.listItem.map((item, key) => (
                     <ListItem key={key} sx={{margin: 0, padding: 0}}>
-                        <Checkbox label={`${item}`} size='md' onChange={() => onChange(item)} checked={checkedItems.includes(item)}/>
+                        <Checkbox label={`${item}`} size='md' onChange={() => onChange && onChange(item)} checked={checkedItems.includes(item)}/>
                     </ListItem>
                 ))
             }

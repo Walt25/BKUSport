@@ -22,8 +22,8 @@ export default function Login() {
 
         try {
             const response = await login(email, password)
-            document.cookie = `access_token=${response.data.result.access_token}`
-            document.cookie = `refresh_token=${response.data.result.refresh_token}`
+            document.cookie = `access_token=${response.data.result.access_token};path=/`
+            document.cookie = `refresh_token=${response.data.result.refresh_token};path=/`
             if (response.data.result.role === 'user') {
                 router.push('/')
             }
@@ -81,7 +81,7 @@ export default function Login() {
                                             d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
                                         />
                                     </svg>
-                                    <span className="inline-block ml-1">Forgot Password</span>
+                                    <span className="inline-block ml-1" onClick={() => {router.push('/forgot')}}>Forgot Password</span>
                                 </button>
                             </div>
                             <div className="text-center sm:text-right whitespace-nowrap">

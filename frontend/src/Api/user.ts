@@ -1,3 +1,4 @@
+import { getJwtFromCookie } from "@/ultils"
 import axios, {AxiosRequestConfig} from "axios"
 import { cookies } from "next/headers"
 
@@ -29,4 +30,18 @@ export const verifyEmail = async (userId: string, otp: string) => {
         userId, otp
     })
     return res
+}
+
+export const verifyOTPFogotPass = async (userId: string, otp: string, password: string) => {
+    const res = await axios.post(`http://localhost:4000/users/verifyOTPFogotPass`, {
+        userId, otp, password
+    })
+    return res
+}
+
+export const forgotPassword = async (email: string) => {
+   const res = await axios.post('http://localhost:4000/users/forgot-password', {
+        email
+   })
+   return res
 }

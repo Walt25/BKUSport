@@ -94,15 +94,15 @@ class UsersService {
   async forgotPassword(payload: ForgotPasswordReqBody) {
     const user = await databaseService.users.findOne({ email: payload.email })
     if (!user) {
-      throw new ErrorWithStatus({ message: 'Email not exist', status: 550 })
+      return { message: 'Email not exist', status: "FALSE" }
     }
 
     const user_id = user._id.toString()
     const respone = await sendOTPForgotPassword(payload.email, user_id)
     return {
-      user_id,
-      role: 'user',
-      respone
+      message: respone.message,
+      status: "SUCCESS",
+      user_id
     }
   }
 }

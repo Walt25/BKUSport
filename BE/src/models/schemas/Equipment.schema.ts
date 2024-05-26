@@ -9,6 +9,16 @@ interface Attribute {
   content: string
 }
 
+interface Sport {
+  title: string,
+  tag: string,
+}
+
+interface Category {
+  title: string,
+  tag: string
+}
+
 interface EquipmentType {
   _id?: ObjectId
   images: string[]
@@ -19,7 +29,8 @@ interface EquipmentType {
   description: string
   slug: string
   attribute: Attribute[]
-  category: string[]
+  category: Category
+  sport: Sport[]
 }
 
 export default class Equipment {
@@ -32,7 +43,8 @@ export default class Equipment {
   description: string
   slug: string
   attribute: Attribute[]
-  category: string[]
+  category: Category
+  sport: Sport[]
   constructor(equipment: EquipmentType) {
     this._id = equipment._id
     this.images = equipment.images
@@ -44,5 +56,6 @@ export default class Equipment {
     this.slug = equipment.slug
     this.attribute = equipment.attribute
     this.category = equipment.category
+    this.sport = equipment.sport
   }
 }

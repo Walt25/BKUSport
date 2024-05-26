@@ -13,7 +13,7 @@ export const getAllUniformController = async (req: Request, res: Response) => {
 
 export const getUniformByIdController = async (req: Request, res: Response) => {
   const uniform_id = req.params.uniform_id
-  const result = databaseService.uniforms.findOne({ _id: new ObjectId(uniform_id) })
+  const result = await databaseService.uniforms.findOne({ _id: new ObjectId(uniform_id) })
   return res.json({
     message: 'get a uniform successfully',
     result

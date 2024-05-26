@@ -10,6 +10,7 @@ import rentalService from '~/services/rental.services'
 import { RentalStatus, TokenType } from '~/constants/enum'
 import { signToken } from '~/utils/jwt'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import { hashPassword } from '~/utils/crypto'
 const bcrypt = require('bcrypt')
 
 export const loginController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
@@ -134,9 +135,54 @@ export const verifyOTP = async (req: Request, res: Response) => {
   }
 }
 
+export const verifyOTPFogotPass = async (req: Request, res: Response) => {
+  let { userId, otp, password } = req.body
+
+  try {
+    if (!userId || !otp) {
+      throw Error('Empty otp are not allowed')
+    } else {
+      const otpDetail = await databaseService.otpVerification.find({ userId }).toArray()
+      if (otpDetail.length < 1) {
+        throw new Error("Account record doesn't exist or has been verified already, please sign up or login")
+      } else {
+        const { exprireAt } = otpDetail[0]
+        const hashedOTP = otpDetail[0].otp
+        if (exprireAt < Date.now()) {
+          await databaseService.otpVerification.deleteMany({ userId })
+          throw new Error('Code has exprired. Please request again')
+        } else {
+          const validOTP = await bcrypt.compare(otp, hashedOTP)
+          if (!validOTP) {
+            throw new Error('Invalid code passed, please check your email')
+          } else {
+            await databaseService.users.updateOne({ _id: new ObjectId(userId) }, [
+              {
+                $set: { password: hashPassword(password)}
+              }
+            ])
+            await databaseService.otpVerification.deleteMany({ userId })
+            res.json({
+              status: 'VERIFIED',
+              message: 'User email verified successfully'
+            })
+          }
+        }
+      }
+    }
+  } catch (error: any) {
+    res.json({
+      status: 'FALSE',
+      message: error.message
+    })
+  }
+}
+
 export const forgotPasswordController = async (req: Request, res: Response) => {
   const result = await usersService.forgotPassword(req.body)
-  return res.status(200).json({
-    message: result.respone.message
+  return res.json({
+    status: result.status,
+    message: result.message,
+    user_id: result.user_id
   })
 }

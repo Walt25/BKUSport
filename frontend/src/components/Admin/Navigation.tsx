@@ -31,9 +31,13 @@ const dashBoardItem: DashBoardItemType[] = [
         icon: <BsFileText size={16}/>,
         advance: [
             {
-                title: 'Products List',
+                title: 'Product List',
                 link: '/admin/productlist'
             },
+            {
+                title: 'Uniform List',
+                link: '/admin/uniformlist'
+            }
            
         ]
     },

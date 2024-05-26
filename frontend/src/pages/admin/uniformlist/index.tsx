@@ -1,9 +1,7 @@
-import EnhancedTable from '@/components/Admin/Table'
-import { Breadcrumb } from '@/components/Breadcrumb'
-import { GroupCheckboxes } from '@/components/CheckboxList'
+import { Breadcrumb } from '@/components/Breadcrumb';
 import { AdminLayout } from '@/components/Layout/AdminLayout'
-import { DenseMenu } from '@/components/Menu'
-import { RangeSlider } from '@/components/Slider'
+import { Model } from '@/components/Model';
+import { FieldsType } from '@/pages';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,74 +9,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import axios from 'axios'
-import { FieldsType } from '@/pages'
-import { HiDotsVertical } from 'react-icons/hi'
-import { TbSoccerField } from 'react-icons/tb'
-import { CustomMenu } from '@/components/CustomMenu/CustomMenu'
-import { BiSearch } from 'react-icons/bi'
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useRouter } from 'next/router'
-import { Checkbox } from '@mui/material'
-import { Model } from '@/components/Model'
+import { useRouter } from 'next/router';
+import React, { ReactElement, useState } from 'react'
+import { BiSearch } from 'react-icons/bi';
+import { MenuDot } from '../customerlist';
+import { Checkbox } from '@mui/material';
+import { ImBin2 } from 'react-icons/im';
 
-type MenuDotProps = {
-    onDelete: () => void
-    cancel?: boolean
-}
-
-export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
-
-    const ref = useRef(null)
-    const [showDropdown, setShowDropDown] = useState(false)
-
-    const handleClick = () => {
-        console.log('click')
-        onDelete()
-    }
-
-    return (
-        <div ref={ref}>
-            <HiDotsVertical onClick={() => setShowDropDown(true)} className='cursor-pointer'/>
-            <CustomMenu
-                anchorEl={ref.current}
-                open={showDropdown}
-                className="shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
-                onClose={() => setShowDropDown(false)}
-                MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                }}
-            >
-                <MenuItem disableRipple style={{ cursor: "default" }}>
-                  <div>
-                    <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white">Xem chi tiết</a>
-                  </div>
-                </MenuItem>
-                <MenuItem disableRipple style={{ cursor: "default" }}>
-                  <div>
-                    <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleClick}>Xóa</a>
-                  </div>
-                </MenuItem>
-                {
-                    cancel && 
-                    <MenuItem disableRipple style={{ cursor: "default" }}>
-                        <div>
-                            <a href="#" className="block text-sm py-1 hover:text-[--primary-color] dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleClick}>Hủy đơn</a>
-                        </div>
-                    </MenuItem>
-                }
-            </CustomMenu>
-            
-        </div>
-    )
-}
-  
-  const userList = [
+const userList = [
     {
+        id: 0,
         username: "Adam Taylor",
         role: "user",
         date_of_birth: "October 19, 1999",
@@ -87,6 +27,7 @@ export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
         email: "taylor-adam@example.com"
     },
     {
+        id: 1,
         username: "Anna Wilson",
         role: "user",
         date_of_birth: "October 09, 2000",
@@ -95,6 +36,7 @@ export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
         email: "wilson-anna@example.com"
     },
     {
+        id: 2,
         username: "Brian Wood",
         role: "user",
         date_of_birth: "October 19, 1999",
@@ -103,6 +45,7 @@ export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
         email: "taylor-adam@example.com"
     },
     {
+        id: 3,
         username: "Charlotte Jones",
         role: "user",
         date_of_birth: "October 19, 1999",
@@ -111,6 +54,7 @@ export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
         email: "jones-charlotte@example.com"
     },
     {
+        id: 4,
         username: "Jacob Lee",
         role: "user",
         date_of_birth: "October 19, 1999",
@@ -121,12 +65,13 @@ export const MenuDot:React.FC<MenuDotProps> = ({onDelete, cancel = false}) => {
 
   ];
 
-function CustomerList() {
+function UniformList() {
 
     const [fields, setFields] = useState<FieldsType[]>([])
 
     const route = useRouter()
     const [showModel, setShowModel] = useState(false)
+    const [checked, setChecked] = useState(-1)
     
 
     const breadcrumb = [
@@ -142,8 +87,9 @@ function CustomerList() {
 
     console.log(showModel)
 
-    return (
-        <div className="p-7 h-[100vh]">
+
+  return (
+    <div className="p-7 h-[100vh]">
             <div className="">
                 <Breadcrumb item={breadcrumb} />
             </div>
@@ -172,39 +118,59 @@ function CustomerList() {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {userList.map((row, key) => (
-                            <TableRow
-                            key={key}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                            <TableCell align="left" component="th" scope="row" >
-                                <Checkbox />
-                            </TableCell>
-                            <TableCell className='w-fit hover:underline cursor-pointer' onClick={() => {
-                                route.push(`/admin/customerlist/6b2133wweewqeqe4`)
-                            }}>
-                                <div className='flex flex-row items-center'>
-                                    <img src={row.avatar} alt="pic" className='w-10 h-10 rounded-md'/>
-                                    <div className='flex flex-col pl-2'>
-                                        <span className='font-semibold'>{row.username}</span>
-                                        <span className='text-[#6c757d]'>{row.email}</span>
+                        {
+                            userList.map((row, key) => (
+                                checked !== row.id ?
+                                <TableRow
+                                    key={key}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}  
+                                >
+                                <TableCell align="left" component="th" scope="row" >
+                                    <Checkbox onChange={() => setChecked(row.id)} checked={checked === row.id}/>
+                                </TableCell>
+                                <TableCell className='w-fit hover:underline cursor-pointer' onClick={() => {
+                                    route.push(`/admin/customerlist/6b2133wweewqeqe4`)
+                                }}>
+                                    <div className='flex flex-row items-center'>
+                                        <img src={row.avatar} alt="pic" className='w-10 h-10 rounded-md'/>
+                                        <div className='flex flex-col pl-2'>
+                                            <span className='font-semibold'>{row.username}</span>
+                                            <span className='text-[#6c757d]'>{row.email}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </TableCell>
-                            <TableCell align="left">
-                                {row.created_at}
-                            </TableCell>
-                            <TableCell align="left">
-                                {row.role}
-                            </TableCell>
-                            <TableCell align="left">
-                                {row.date_of_birth}
-                            </TableCell>
-                            <TableCell align="left">
-                                <MenuDot onDelete={() => setShowModel(true)}/>
-                            </TableCell>
-                            </TableRow>
-                        ))}
+                                </TableCell>
+                                <TableCell align="left">
+                                    {row.created_at}
+                                </TableCell>
+                                <TableCell align="left">
+                                    {row.role}
+                                </TableCell>
+                                <TableCell align="left">
+                                    {row.date_of_birth}
+                                </TableCell>
+                                <TableCell align="left">
+                                    <MenuDot onDelete={() => setShowModel(true)}/>
+                                </TableCell>
+                                </TableRow> :
+                                    <TableRow
+                                        key={key}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}  
+                                        className='bg-blue-500'
+                                    >
+                                        <TableCell align="left" component="th" scope="row" >
+                                            <Checkbox className='bg-white hover:bg-white' onChange={() => setChecked(-1)} checked={checked === row.id}/>
+                                        </TableCell>
+                                        <TableCell className='text-white text-lg'>
+                                            Delete this user
+                                        </TableCell>
+                                        <TableCell className='bg-blue-500'/>
+                                        <TableCell className='bg-blue-500'/>
+                                        <TableCell className='bg-blue-500'/>
+                                        <TableCell>
+                                            <ImBin2 className='text-white cursor-pointer' size={20}/>
+                                        </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -233,7 +199,7 @@ function CustomerList() {
     )
 }
 
-CustomerList.getLayout = (page: ReactElement) => {
+UniformList.getLayout = (page: ReactElement) => {
     return (
         <AdminLayout>
           {page}
@@ -241,4 +207,4 @@ CustomerList.getLayout = (page: ReactElement) => {
       )
 }
 
-export default CustomerList
+export default UniformList
