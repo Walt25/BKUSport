@@ -10,7 +10,6 @@ import { useSearchParams } from 'next/navigation'
 import { TextEditor } from "@/components/TextEditor";
 import axios from "axios";
 import { MdCancelPresentation } from "react-icons/md";
-    import { ProductImage } from "@/components/ProductImage";
 import { FaTrash } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { FieldsType } from "@/pages";

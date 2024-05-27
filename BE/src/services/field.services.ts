@@ -19,7 +19,7 @@ class FieldService {
     return field
   }
 
-  async rentField(user_id: ObjectId | undefined, field_id: ObjectId, start: Date) {
+  async rentField(user_id: ObjectId | undefined, field_id: ObjectId, start: Date, time: string) {
     const rentalPrice = await databaseService.rentalPrices.findOne({ field_id, start })
     if (!rentalPrice) {
       throw new ErrorWithStatus({ message: 'Rental price not found', status: HTTP_STATUS.NOT_FOUND })

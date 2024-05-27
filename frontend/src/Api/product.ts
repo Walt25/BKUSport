@@ -1,4 +1,5 @@
 import { ProductType } from "@/components/Product"
+import { SportType } from "@/data"
 import { AttributeType } from "@/pages/admin/fieldlist/[...slug]"
 import { getJwtFromCookie } from "@/ultils"
 import axios from "axios"
@@ -13,7 +14,7 @@ export type AddProductType = {
     slug: string,
     attribute: AttributeType[],
     category: {title: string, tag: string},
-    sport: {title: string, tag: string}[]
+    sport: SportType[]
 }
 
 export const upload = async (files: FormData) => {

@@ -19,6 +19,9 @@ import { createSlug } from "@/ultils";
 import { updateProductById } from "@/Api/product";
 import { Model } from '@/components/Model'
 import { useRouter } from "next/router";
+import { CategoryType } from "@/components/Catalog";
+import { MultiSelect } from "react-multi-select-component";
+import { sportData } from "@/data";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -35,7 +38,8 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
     const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [loading, setLoading] = useState(true)
     const [description, setDescription] = useState("")
-    const [categories, setCategories] = useState<string[]>([]) 
+    const [sport, setSport] = useState<{value: string, label: string}[]>([])
+    const [categories, setCategories] = useState<CategoryType>({} as CategoryType) 
 
     const [name, setName] = useState('')
     const [slug, setSlug] = useState('')
@@ -145,43 +149,51 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
         setUploadImages(Array.from(upload))
     }
 
-    const handleChangeCategories = (cate: string) => {
-        if (categories.includes(cate)) {
-            setCategories(categories.filter(i => i !== cate))
-        }
-        else {
-            setCategories([...categories, cate])
-        }
-    }
-
     const checkChecked = (src: string) => {
         return selectImage.includes(src)
     }
 
     const handleUpdate = async () => {
-        const data = {
-            images: product.images, 
-            name: name || product.name, 
-            type: [], 
-            regularPrice: regularPrice || product.regularPrice, 
-            discountPrice: discountPrice || product.discountPrice, 
-            description: description || product.description,
-            slug: slug || product.slug,
-            attribute: attributes.length > 0 ? attributes : product.attribute,
-            category: categories.length > 0 ? categories : product.category,
-        }
-        const res = await updateProductById(data, id)
+        // const data = {
+        //     images: product.images, 
+        //     name: name || product.name, 
+        //     type: [], 
+        //     regularPrice: regularPrice || product.regularPrice, 
+        //     discountPrice: discountPrice || product.discountPrice, 
+        //     description: description || product.description,
+        //     slug: slug || product.slug,
+        //     attribute: attributes.length > 0 ? attributes : product.attribute,
+        //     category: categories
+        //     sport: []
+        // }
+        // const res = await updateProductById(data, id)
 
-        if (res.status === "success") {
-            setShowModel(true)
-            setTimeout(() => {
-                setShowModel(false)
-                route.push('/admin/productlist')
-            }, 2000)
-        }
+        // if (res.status === "success") {
+        //     setShowModel(true)
+        //     setTimeout(() => {
+        //         setShowModel(false)
+        //         route.push('/admin/productlist')
+        //     }, 2000)
+        // }
     }
 
-    console.log(categories.length > 0 && categories || product.category)
+    const getCategory = () => {
+        let cate: {title: string, tag: string}[] = []
+        sportData.map(data => {
+            if (sport.find(s => s.label === data.label)) {
+                cate = cate.concat(data.category)
+            }
+        })
+        const map = new Map()
+        cate.map(i => {
+            if(!map.has(i.title)) {
+                map.set(i.title, i.tag)
+            }
+        })
+        return Array.from(map.keys())
+    }
+
+    console.log(product)
 
     if (loading) return <div>Loading</div>
 
@@ -275,7 +287,29 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                         <input multiple  onChange={handleImageUpload} className="block hidden w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" accept="image/*" />
                         
                     </div>
-                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                    <div className="mb-6 bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <MultiSelect
+                            options={sportData}
+                            value={sport}
+                            onChange={setSport}
+                            labelledBy="Select"
+                            className='max-w-[365px]'
+                        />
+                    </div>
+                    <div className="mb-6 bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+                        <select id="countries" className="outline-none bg-white border border-gray-300 text-gray-3
+                        00 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected>Choose type</option>
+                            {
+                                getCategory().map((i, k) => (
+                                    <option value={i}>
+                                        <div className='py-2'>{i}</div>
+                                    </option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                    <div className="mb-6 bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
                         <h1 className="text-lg font-semibold">Pricing</h1>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -288,35 +322,7 @@ export default function ProductDetail({ id }: InferGetServerSidePropsType<typeof
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white p-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-                        <GroupCheckboxes 
-                            input={{
-                                title: "Categories",
-                                listItem: category
-                            }}
-                            onChange={handleChangeCategories} 
-                            checkedItems={categories.length > 0 && categories || product.category}
-                        />
-                        {
-                            addCategory && (
-                                <div className="grid grid-cols-1 gap-4">
-                                    <div>
-                                        <label className="font-semibold text-sm text-gray-600 pb-1 pt-3 block">Category</label>
-                                        <input onChange={e => setCurrenCate(e.target.value)} type="text" className="border rounded-sm border-[#ced4da] outline-none px-3 py-2 mt-1 mb-3 text-sm w-full" />
-                                    </div>
-                                    
-                                </div>
-                            )
-                        }
-                        {
-                            addCategory ? <button onClick={()=>{
-                                currentCate !== '' && setCategory([...category, currentCate])
-                                setAddCategory(false)
-                            }} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Save</button> :
-                            <button onClick={()=> setAddCategory(true)} className="block mb-2 text-sm font-medium border w-fit px-2 py-1 mt-2 text-gray-900 dark:text-white border-blue-500">Add new</button>
-                        }
-
-                    </div>
+                   
                 </div>
             </div>
             {showModel && (

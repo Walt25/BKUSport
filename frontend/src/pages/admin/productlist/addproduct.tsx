@@ -28,6 +28,11 @@ type CategoryType = {
     tag: string
 }
 
+type SportType = {
+    label: string,
+    value: string
+}
+
 function AddProduct() {
     // const [product, setProduct] = useState<ProductType>({} as ProductType)
     const [description, setDescription] = useState("")
@@ -39,7 +44,7 @@ function AddProduct() {
     const [attributes, setAttributes] = useState<AttributeType[]>([])
     const [categories, setCategories] = useState<CategoryType>({} as CategoryType) 
     const [showModel, setShowModel] = useState(false)
-    const [sport, setSport] = useState<{value: string, label: string}[]>([])
+    const [sport, setSport] = useState<SportType[]>([])
     
     const [currenAttr, setCurrenAttr] = useState<AttributeType>({} as AttributeType)
     const [addAttribute, setAddAttribute] = useState(false)

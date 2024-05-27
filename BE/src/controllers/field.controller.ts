@@ -30,8 +30,8 @@ export const getFieldByIdController = async (req: Request, res: Response) => {
 
 export const orderFieldController = async (req: Request, res: Response) => {
   const field_id = new ObjectId(req.params.field_id)
-  const { name, email, phone, start } = req.body
-  const result = fieldService.rentField(req.user?._id, field_id, start)
+  const { start, time } = req.body
+  const result = fieldService.rentField(req.user?._id, field_id, start, time)
   return res.json({
     message: 'rent a field successfully',
     result

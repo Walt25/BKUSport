@@ -7,7 +7,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md"
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 type CalendarProps = {
-    onBooking: () => void
+    onBooking: (date: string, time: string, price: string) => void
 }
 
 export const Calendar:React.FC<CalendarProps> = ({onBooking}) => {
@@ -28,7 +28,7 @@ export const Calendar:React.FC<CalendarProps> = ({onBooking}) => {
     var weekDates= []; 
     const current = moment(currentDay)  
     for (var i = 1; i <= 7; i++) {
-        weekDates.push({dayMonth: current.day(i).format("MMM Do"), date: current.day(i).format("YYYY MMM Do"), day: current.day(i).format("Do")}); 
+        weekDates.push({dayMonth: current.day(i).format("MMM Do"), date: current.day(i).format("DD/MM/YYYY"), day: current.day(i).format("Do")}); 
     }
   
     return weekDates; 
@@ -37,259 +37,57 @@ export const Calendar:React.FC<CalendarProps> = ({onBooking}) => {
   const tableAM = [
     {
         time: "5:00 - 6:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "6:30 - 8:00",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "8:00 - 9:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "9:30 - 11:00",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "11:00 - 12:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
   ]
   const tablePM = [
     {
         time: "13:00 - 14:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "14:30 - 16:00",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "16:00 - 17:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "17:30 - 19:00",
-        price: '300K',
+        price: '300000',
         available: true
     },
     {
         time: "19:00 - 20:30",
-        price: '300K',
+        price: '300000',
         available: true
     },
   ]
-
-//   const tablePrice = [
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: false
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-//     [
-//         {
-//             time: "5:00 - 6:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "6:30 - 8:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "8:00 - 9:30",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "9:30 - 11:00",
-//             price: '300K',
-//             available: true
-//         },
-//         {
-//             time: "11:00 - 12:30",
-//             price: '300K',
-//             available: true
-//         },
-
-//     ],
-
-//   ]
-
-
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-row items-center justify-between">
@@ -324,15 +122,15 @@ export const Calendar:React.FC<CalendarProps> = ({onBooking}) => {
                         getThisWeekDates().map(i => (
                             <div className="flex flex-row py-3">
                                 <div className="border border-l-0 py-4 pl-1 pr-3 min-w-[50px] flex justify-center items-center rounded-tr-md rounded-br-md">{i.day}</div>
-                                <div className="pl-10 grid grid-cols-5 gap-6 w-full" onClick={onBooking}>
+                                <div className="pl-10 grid grid-cols-5 gap-6 w-full">
                                     {
                                         tense === "AM" ? tableAM.map((t, k) => (
-                                            <div key={k} className="flex flex-col border items-center justify-center">
+                                            <div key={k} className="flex flex-col border items-center justify-center" onClick={() => onBooking(i.date, t.time, t.price)}>
                                                 <span>{t.time}</span>
                                                 <span>{t.price}</span>
                                             </div>
                                         )) : tablePM.map((t, k) => (
-                                            <div key={k} className="flex flex-col border items-center justify-center">
+                                            <div key={k} className="flex flex-col border items-center justify-center" onClick={() => onBooking(i.date, t.time, t.price)}>
                                                 <span>{t.time}</span>
                                                 <span>{t.price}</span>
                                             </div>

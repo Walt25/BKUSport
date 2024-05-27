@@ -12,7 +12,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { FieldsType } from "@/pages";
 import axios from "axios";
 import { FieldsCarousel } from "@/components/FieldsCarousel";
-import { IoLocationSharp } from "react-icons/io5";
+import { IoLocationSharp, IoTimeOutline } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 import { GiTeapotLeaves } from "react-icons/gi";
 import { FaBottleWater } from "react-icons/fa6";
@@ -26,6 +26,7 @@ import { useCurrentUser } from "@/contexts/userContext";
 import { Model } from "@/components/Model";
 import { login } from "@/Api/user";
 import { useRouter } from 'next/router';
+import moment from "moment";
 
 export const getServerSideProps = (async (context) => {
     const id = context.params?.slug?.[0];
@@ -45,6 +46,7 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
     const [error, setError] = useState(false)
     const router = useRouter()
     const [startDate, setStartDate] = useState(new Date)
+    const [selectedDate, setSelectedDate] = useState<{date: string, time: string, price: string}>({} as {date: string, time: string, price: string})
 
 
     useEffect(() => {
@@ -131,7 +133,8 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
         }
     ]
 
-    const handleBooking = () => {
+    const handleBooking = (date: string, time: string, price: string) => {
+        setSelectedDate({date, time, price})
         setShowModel(true)
     }
 
@@ -146,6 +149,10 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
         } catch (error) {
             setError(true)
         }
+    }
+
+    const handleSubmitOrder = async () => {
+
     }
 
     console.log(!currentUser._id)
@@ -326,9 +333,9 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                            <h1 className="pb-2 text-xl font-medium">Đặt sân theo yêu cầu</h1>
                             <Divider />
                             <form className="pt-5">
-                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Họ và tên"/>
-                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Email"/>
-                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Số điện thoại"/>
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Họ và tên" value={currentUser.username}/>
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" placeholder="Email" value={currentUser.email}/>
+                                <input type="text" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" value={selectedDate.price}/>
                                 
                                 <div className="flex flex-row items-center justify-between">
                                     <div className="relative max-w-sm">
@@ -337,13 +344,11 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                             </svg>
                                         </div>
-                                        <DatePicker className="border outline-none pl-4 py-2 mt-1 mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" selected={startDate} onChange={(date) => setStartDate(date ? date : new Date())}/>
+                                        <div className="border outline-none pl-4 py-2 mt-1 mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{selectedDate.date}</div>
                                     </div>
-                                    <div className="relative pl-3 flex-1">
-                                        <div className="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    
-                                        </div>
-                                        <input type="time" id="time" className="border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm w-full" min="09:00" max="18:00" value="00:00" required />
+                                    <div className="flex flex-row items-center justify-between border outline-none rounded-lg px-3 py-2 mt-1 mb-3 text-sm flex-1 ml-4">
+                                        <div>{selectedDate.time}</div>
+                                        <IoTimeOutline  />
                                     </div>
                                 </div>
                                 <textarea className="border w-full outline-none px-3 py-2 text-sm min-h-32" placeholder="Ghi chú" />
@@ -360,8 +365,8 @@ export default function FieldDetail({ id }: InferGetServerSidePropsType<typeof g
                             
                         </div>
                     }
-                    top="27%"
-                    bottom="27%"
+                    top="15%"
+                    bottom="15%"
                     left="35%"
                     right="35%"
             />
