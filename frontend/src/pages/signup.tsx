@@ -14,20 +14,25 @@ export default function SignUp() {
     const [password, setPassword] = useState('')
     const [confPass, setConfPass] = useState('')
 
-    const [error, setError] = useState(false)
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             const response = await register(username, email, password, confPass, 'user')
+            console.log(response)
             if (response) {
-                if (response.data.result.role === 'user') {
+                if (response.data.status === "ERROR") {
+                    setError(response.data.message)
+                }
+                else if (response.data.result.role === 'user') {
                     router.push(`/verification/${response.data.result.user_id}`)
                 }
                 else router.push('/admin')
             }
+            
         } catch (error) {
-            setError(true)
+            throw Error("error")
         }
     }
 
@@ -55,7 +60,7 @@ export default function SignUp() {
                         <label className="font-semibold text-sm text-gray-600 pb-1 block">Confirm Password</label>
                         <input type="password" className="border outline-none rounded-lg px-3 py-2 mt-1 text-sm w-full"  onChange={(e) => setConfPass(e.target.value)}/>
 
-                        <div className={`text-sm ${error ? 'opacity-1' : 'opacity-0'} text-red-500 mt-3`}>* This email is used in another account.</div>
+                        <div className={`text-sm ${error !== "" ? 'opacity-1' : 'opacity-0'} text-red-500 mt-3`}>* {error}</div>
 
 
                         <button

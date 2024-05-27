@@ -36,7 +36,7 @@ export const registerController = async (
     })
   }
 
-  return res.json({ message: result.error })
+  return res.json({ message: result.error, status: "ERROR" })
 }
 
 export const rentNewFieldController = async (req: Request, res: Response, next: NextFunction) => {
